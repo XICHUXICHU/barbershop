@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+import { UserButton } from "@clerk/nextjs";
 import { BarbershopProvider, useBarbershop } from "./barbershop-context";
 
 export default function DashboardSlugLayout({
@@ -67,6 +68,10 @@ function Sidebar() {
         >
           🛡️ Super Admin
         </a>
+      </div>
+      
+      <div className="mt-4 pt-4 border-t border-gray-200">
+        <UserButton showName />
       </div>
     </aside>
   );

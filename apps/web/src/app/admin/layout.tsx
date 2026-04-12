@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 
 export default function AdminLayout({
   children,
@@ -41,10 +42,13 @@ export default function AdminLayout({
         <div className="mt-auto">
           <Link
             href="/dashboard"
-            className="text-xs text-[gray-500] hover:text-gray-900"
+            className="text-xs text-[gray-500] hover:text-gray-900 block mb-4"
           >
             ← Volver al Dashboard
           </Link>
+          <div className="pt-4 border-t border-gray-200">
+            <UserButton showName />
+          </div>
         </div>
       </aside>
 

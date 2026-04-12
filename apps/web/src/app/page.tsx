@@ -1,10 +1,28 @@
 import Link from "next/link";
+import { UserButton, SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen px-4">
+    <div className="flex flex-col min-h-screen px-4 relative">
+      {/* Auth Nav */}
+      <nav className="absolute top-4 right-6 flex items-center gap-4">
+        <SignedIn>
+          <Link href="/dashboard" className="text-sm font-medium hover:text-[blue-600] transitio
+n-colors">                                                                                              Mi Panel
+          </Link>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button className="text-sm font-medium hover:text-[blue-600] transition-colors">
+              Iniciar Sesión
+            </button>
+          </SignInButton>
+        </SignedOut>
+      </nav>
+
       {/* Hero */}
-      <header className="text-center max-w-3xl mx-auto py-20">
+      <header className="flex flex-col items-center justify-center text-center max-w-3xl mx-auto py-20 mt-16">
         <h1 className="text-5xl font-extrabold tracking-tight mb-6">
           <span className="text-[blue-600]">Barber</span>Book
         </h1>
