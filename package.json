@@ -1,0 +1,23 @@
+{
+  "name": "barber-shop-saas",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "db:generate": "turbo db:generate",
+    "db:push": "turbo db:push"
+  },
+  "devDependencies": {
+    "turbo": "^2.9.6",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "npm@10.9.3",
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,53 @@
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Manrope:wght@300;400;500;600;700;800&display=swap");
+
+@theme {
+  /* Heritage Curator — Material 3 Dark Gold Palette */
+  --color-hc-primary: #e9c349;
+  --color-hc-on-primary: #3c2f00;
+  --color-hc-primary-container: #af8d11;
+  --color-hc-on-primary-container: #342800;
+  --color-hc-surface: #131313;
+  --color-hc-surface-dim: #131313;
+  --color-hc-surface-bright: #393939;
+  --color-hc-surface-container-lowest: #0e0e0e;
+  --color-hc-surface-container-low: #1c1b1b;
+  --color-hc-surface-container: #201f1f;
+  --color-hc-surface-container-high: #2a2a2a;
+  --color-hc-surface-container-highest: #353534;
+  --color-hc-surface-variant: #353534;
+  --color-hc-on-surface: #e5e2e1;
+  --color-hc-on-surface-variant: #d3c4af;
+  --color-hc-outline: #9c8f7b;
+  --color-hc-outline-variant: #4f4535;
+  --color-hc-secondary: #c8c6c5;
+  --color-hc-on-secondary: #303030;
+  --color-hc-secondary-container: #474747;
+  --color-hc-tertiary: #ffb68c;
+  --color-hc-on-tertiary: #532200;
+  --color-hc-tertiary-container: #d07b46;
+  --color-hc-error: #ffb4ab;
+  --color-hc-on-error: #690005;
+  --color-hc-error-container: #93000a;
+  --color-hc-background: #131313;
+  --color-hc-on-background: #e5e2e1;
+
+  --font-headline: "Noto Serif", serif;
+  --font-body: "Manrope", sans-serif;
+  --font-label: "Manrope", sans-serif;
+}
+
+/* Legacy dashboard variables */
+:root {
+  --color-primary: #1E293B;
+  --color-accent: #2563EB;
+  --color-accent-hover: #1D4ED8;
+  --color-surface: #FFFFFF;
+  --color-muted: #6B7280;
+  --color-text: #111827;
+  --color-bg: #F8F9FA;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
