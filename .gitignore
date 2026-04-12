@@ -5,3 +5,6 @@ dist
 .env
 .env.local
 *.tsbuildinfo
+
+SECRETS_Y_ACCESOS.md
+
