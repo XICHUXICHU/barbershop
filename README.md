@@ -4,30 +4,26 @@ Este es el repositorio completo de la aplicación de gestión de Barberías. Est
 
 ## 🚀 Tecnologías y Servicios Usados
 
-1. **Frontend (Website & Dashboard)**
-   - **Framework:** Next.js 15 (App Router)
-   - **Diseño:** Tailwind CSS v4
-   - **Iconos:** Lucide React
-   - **Ubicación:** Carpeta `apps/web`
-   - **Hosting recomendado:** [Vercel](https://vercel.com/) (Pendiente de despliegue)
+### 1. Frontend (Website & Dashboard)
+- **Framework Principal:** [Next.js 15 (App Router)](https://nextjs.org/) - Para generar todas las páginas (SSR y Client).
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/) - Tipado estricto.
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/) - Diseño responsivo y temas de color consistentes.
+- **Iconos:** [Lucide React](https://lucide.dev/) - Sistema de íconos vectoriales SVG.
+- **Autenticación (Login):** [Clerk](https://clerk.com/) - Sistema de usuarios, registro y validación (protege las rutas del dashboard y admin).
+- **Ubicación:** Servido nativamente bajo la carpeta `apps/web`.
+- **Hosting en Producción:** [Vercel](https://vercel.com/) (Ej. `https://barbershop-web-sigma.vercel.app`).
 
-2. **Backend (API Rest)**
-   - **Framework:** NestJS
-   - **ORM:** Prisma
-   - **Ubicación:** Carpeta `apps/api`
-   - **Hosting recomendado:** [Render](https://render.com/) o [Railway](https://railway.app/)
+### 2. Backend (API Rest)
+- **Framework Principal:** [NestJS](https://nestjs.com/) - Arquitectura escalable para microservicios.
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/).
+- **ORM / Base de Datos:** [Prisma](https://www.prisma.io/) - Mapador relacional a objetos de última generación.
+- **Ubicación:** Servido bajo la carpeta `apps/api`.
+- **Hosting en Producción:** [Render](https://render.com/) (Ej. `https://barbershop-api-zq76.onrender.com`).
 
-3. **Base de Datos**
-   - **Proveedor:** [Neon](https://neon.tech/) (PostgreSQL Serverless)
-   - Contiene todas las tablas (Barberías, Servicios, Citas, Barberos, Horarios).
-
-4. **Almacenamiento de Imágenes**
-   - **Proveedor:** [Cloudinary](https://cloudinary.com/)
-   - Se utiliza para subir logos de barberías, portadas y fotos de los servicios desde el backend.
-
-5. **Control de Versiones**
-   - **Proveedor:** [GitHub](https://github.com/) 
-   - URL Repositorio: `https://github.com/XICHUXICHU/barbershop.git`
+### 3. Servicios Externos y Nube (SaaS)
+- **Base de Datos Serverless:** [Neon PostgreSQL](https://neon.tech/) - Aloja las tablas de Barberías, Barberos, Citas, Servicios y Clientes.
+- **Gestión de Imágenes:** [Cloudinary](https://cloudinary.com/) - CDN que almacena y recorta las portadas de las barberías, avatares de barberos e imágenes de los servicios subidas temporalmente con `multer`.
+- **Control de Versiones y Repositorio:** [GitHub](https://github.com/) (`https://github.com/XICHUXICHU/barbershop.git`).
 
 ## ⚠️ Sobre las contraseñas y accesos (MUY IMPORTANTE)
 Nunca se deben subir las contraseñas o llaves de API a GitHub por motivos de seguridad, ya que cualquier persona o bot podría verlas y robar datos. 
