@@ -26,6 +26,12 @@ export class BarbershopController {
     return this.barbershopRepo.findAll();
   }
 
+  @Get("by-owner/:ownerId")
+  @ApiOperation({ summary: "List barbershops by owner (Clerk userId)" })
+  async findByOwner(@Param("ownerId") ownerId: string) {
+    return this.barbershopRepo.findByOwnerId(ownerId);
+  }
+
   @Get("by-id/:id")
   @ApiOperation({ summary: "Get barbershop by ID" })
   async findById(@Param("id") id: string) {

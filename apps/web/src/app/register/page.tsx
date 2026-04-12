@@ -39,7 +39,7 @@ export default function RegisterPage() {
       const res = await fetch(`${API_BASE}/barbershops`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, slug, phone, address }),
+        body: JSON.stringify({ ownerId: user?.id, name, slug, phone, address }),
       });
 
       if (!res.ok) {

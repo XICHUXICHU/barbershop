@@ -10,6 +10,7 @@ import {
 import { Barbershop } from "../../domain/entities";
 
 export interface CreateBarbershopInput {
+  ownerId: string;
   name: string;
   slug: string;
   phone: string;
@@ -34,6 +35,7 @@ export class CreateBarbershopUseCase {
       );
     }
     return this.repo.create({
+      ownerId: input.ownerId,
       name: input.name,
       slug: input.slug,
       phone: input.phone,

@@ -1,6 +1,7 @@
 export class Barbershop {
   constructor(
     public readonly id: string,
+    public readonly ownerId: string,
     public readonly name: string,
     public readonly slug: string,
     public readonly phone: string,

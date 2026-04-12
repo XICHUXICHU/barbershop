@@ -2,6 +2,10 @@ import { IsString, IsOptional, Matches, MaxLength, IsBoolean } from "class-valid
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class CreateBarbershopDto {
+  @ApiProperty({ example: "user_2abc123" })
+  @IsString()
+  ownerId!: string;
+
   @ApiProperty({ example: "Fresh Cuts Barber" })
   @IsString()
   @MaxLength(100)

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
@@ -14,16 +15,18 @@ interface ShopSummary {
 }
 
 export default function DashboardIndexPage() {
+  const { user, isLoaded } = useUser();
   const [shops, setShops] = useState<ShopSummary[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${API_BASE}/barbershops`)
+    if (!isLoaded || !user) return;
+    fetch(`${API_BASE}/barbershops/by-owner/${user.id}`)
       .then((r) => r.json())
       .then((data) => setShops(Array.isArray(data) ? data : []))
       .catch(() => setShops([]))
       .finally(() => setLoading(false));
-  }, []);
+  }, [isLoaded, user]);
 
   return (
     <div className="min-h-screen bg-gray-50">

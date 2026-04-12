@@ -24,6 +24,14 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
     return rows.map(this.toEntity);
   }
 
+  async findByOwnerId(ownerId: string): Promise<Barbershop[]> {
+    const rows = await this.prisma.barbershop.findMany({
+      where: { ownerId },
+      orderBy: { createdAt: "desc" },
+    });
+    return rows.map(this.toEntity);
+  }
+
   async create(
     data: Omit<Barbershop, "id" | "createdAt">,
   ): Promise<Barbershop> {
@@ -42,6 +50,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
 
   private toEntity(row: {
     id: string;
+    ownerId: string;
     name: string;
     slug: string;
     phone: string;
@@ -53,6 +62,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
   }): Barbershop {
     return new Barbershop(
       row.id,
+      row.ownerId,
       row.name,
       row.slug,
       row.phone,

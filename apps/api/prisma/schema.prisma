@@ -11,6 +11,7 @@ datasource db {
 
 model Barbershop {
   id        String   @id @default(uuid())
+  ownerId   String   @default("") @map("owner_id")
   name      String
   slug      String   @unique
   phone     String
