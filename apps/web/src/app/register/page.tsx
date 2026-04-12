@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser, UserButton } from "@clerk/nextjs";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -58,10 +60,18 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
+        {/* Usuario autenticado */}
+        <div className="flex items-center justify-center gap-3 mb-6">
+          <UserButton />
+          <span className="text-sm text-gray-600">
+            {user?.primaryEmailAddress?.emailAddress}
+          </span>
+        </div>
+
         <h1 className="text-3xl font-bold text-center mb-2">
           Registra tu Barbería
         </h1>
-        <p className="text-center text-[gray-500] mb-8">
+        <p className="text-center text-gray-500 mb-8">
           Crea tu página y empieza a recibir citas online hoy.
         </p>
 
