@@ -45,8 +45,22 @@ export default function AppointmentsPage() {
     load();
   }
 
+  function buildWhatsAppUrl(appointment: AppointmentRow) {
+    const phone = appointment.customer?.phone?.replace(/\D/g, "") ?? "";
+    const fullPhone = phone.startsWith("52") ? phone : `52${phone}`;
+    const name = appointment.customer?.name ?? "cliente";
+    const service = appointment.service?.name ?? "tu servicio";
+    const time = appointment.startTime ?? "";
+    const msg = `¡Hola ${name}! 👋 Tu cita para *${service}* a las *${time}* ha sido *confirmada* ✅. ¡Te esperamos!`;
+    return `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
+  }
+
   async function handleConfirm(id: string) {
     await fetch(`${API_BASE}/appointments/${id}/confirm`, { method: "PATCH" });
+    const appointment = appointments.find((a) => a.id === id);
+    if (appointment?.customer?.phone) {
+      window.open(buildWhatsAppUrl(appointment), "_blank");
+    }
     load();
   }
 
@@ -100,6 +114,16 @@ export default function AppointmentsPage() {
                       >
                         Confirmar
                       </button>
+                    )}
+                    {a.status === "CONFIRMED" && a.customer?.phone && (
+                      <a
+                        href={buildWhatsAppUrl(a)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200 inline-block"
+                      >
+                        📱 WhatsApp
+                      </a>
                     )}
                     {(a.status === "PENDING" || a.status === "CONFIRMED") && (
                       <button
