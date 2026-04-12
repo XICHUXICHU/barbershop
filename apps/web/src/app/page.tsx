@@ -10,7 +10,7 @@ export default function HomePage() {
           <Link href="/dashboard" className="text-sm font-medium hover:text-[blue-600] transition-colors">
             Mi Panel
           </Link>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </Show>
         <Show when="signed-out">
           <SignInButton mode="modal">
