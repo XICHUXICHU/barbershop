@@ -37,6 +37,12 @@ export default function AdminLayout({
           >
             Citas Recientes
           </Link>
+          <Link
+            href="/admin/leads"
+            className="px-3 py-2 rounded-lg hover:bg-gray-100 text-sm font-medium text-gray-700"
+          >
+            🔍 Prospectos
+          </Link>
         </nav>
 
         <div className="mt-auto">

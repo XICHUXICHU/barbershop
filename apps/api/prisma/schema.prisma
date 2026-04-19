@@ -135,3 +135,34 @@ model GalleryPhoto {
   @@index([barbershopId])
   @@map("gallery_photos")
 }
+
+// ─── Leads / Prospecting ───
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  INTERESTED
+  NOT_INTERESTED
+  CONVERTED
+}
+
+model Lead {
+  id             String     @id @default(uuid())
+  placeId        String     @unique @map("place_id")
+  name           String
+  address        String?
+  phone          String?
+  website        String?
+  mapsUrl        String?    @map("maps_url")
+  rating         Float?
+  totalRatings   Int?       @map("total_ratings")
+  city           String?
+  status         LeadStatus @default(NEW)
+  notes          String?
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+
+  @@index([city])
+  @@index([status])
+  @@map("leads")
+}
