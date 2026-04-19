@@ -1,7 +1,8 @@
-import { Controller, Get, Put, Param, Body } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { Controller, Get, Put, Param, Body, UseGuards } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { PrismaService } from "../../infrastructure/database/prisma.service";
 import { UpsertScheduleDto } from "./dto/upsert-schedule.dto";
+import { ClerkAuthGuard } from "../../infrastructure/auth";
 
 @ApiTags("Schedules")
 @Controller("schedules")
@@ -18,6 +19,8 @@ export class ScheduleController {
   }
 
   @Put()
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Upsert a day schedule for a barbershop" })
   async upsert(@Body() dto: UpsertScheduleDto) {
     return this.prisma.barbershopSchedule.upsert({

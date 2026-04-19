@@ -93,7 +93,7 @@ export default async function ServiciosPage({ params }: Props) {
                 </div>
                 <div className="md:col-span-2 flex items-center justify-between md:justify-end gap-6">
                   <span className="font-headline text-2xl text-hc-primary font-bold">
-                    ${(service.priceAmount / 100).toFixed(0)}
+                    ${service.priceAmount}
                   </span>
                   <Link
                     href={`/${slug}/reservar`}

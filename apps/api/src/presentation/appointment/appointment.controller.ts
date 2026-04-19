@@ -6,8 +6,9 @@ import {
   Param,
   Body,
   Query,
+  UseGuards,
 } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { Inject } from "@nestjs/common";
 import {
   BookAppointmentUseCase,
@@ -19,6 +20,7 @@ import {
 } from "../../domain/repositories";
 import { PrismaService } from "../../infrastructure/database/prisma.service";
 import { CreateAppointmentDto } from "./dto/create-appointment.dto";
+import { ClerkAuthGuard } from "../../infrastructure/auth";
 
 @ApiTags("Appointments")
 @Controller("appointments")
@@ -58,24 +60,32 @@ export class AppointmentController {
   }
 
   @Patch(":id/cancel")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Cancel an appointment" })
   async cancel(@Param("id") id: string) {
     return this.cancelAppointment.execute(id);
   }
 
   @Patch(":id/confirm")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Confirm an appointment" })
   async confirm(@Param("id") id: string) {
     return this.appointmentRepo.updateStatus(id, "confirmed");
   }
 
   @Patch(":id/complete")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Mark an appointment as completed" })
   async complete(@Param("id") id: string) {
     return this.appointmentRepo.updateStatus(id, "completed");
   }
 
   @Patch(":id/no-show")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Mark an appointment as no-show" })
   async noShow(@Param("id") id: string) {
     return this.appointmentRepo.updateStatus(id, "no_show");

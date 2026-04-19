@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Patch, Param, Body } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { Controller, Get, Post, Patch, Param, Body, UseGuards } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { Inject } from "@nestjs/common";
 import {
   BARBER_REPOSITORY,
   IBarberRepository,
 } from "../../domain/repositories";
 import { CreateBarberDto } from "./dto/create-barber.dto";
+import { ClerkAuthGuard } from "../../infrastructure/auth";
 
 @ApiTags("Barbers")
 @Controller("barbers")
@@ -22,6 +23,8 @@ export class BarberController {
   }
 
   @Post()
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Add a barber to a barbershop" })
   async create(@Body() dto: CreateBarberDto) {
     return this.barberRepo.create({
@@ -33,6 +36,8 @@ export class BarberController {
   }
 
   @Patch(":id")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Update a barber" })
   async update(
     @Param("id") id: string,

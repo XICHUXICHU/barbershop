@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useBarbershop } from "../barbershop-context";
 import ImageUpload from "../components/image-upload";
+import { useAuthFetch } from "../../../../lib/use-auth-fetch";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
@@ -15,6 +16,7 @@ interface BarberRow {
 
 export default function BarbersPage() {
   const { barbershopId } = useBarbershop();
+  const authFetch = useAuthFetch();
   const [barbers, setBarbers] = useState<BarberRow[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -36,9 +38,8 @@ export default function BarbersPage() {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    await fetch(`${API}/barbers`, {
+    await authFetch(`/barbers`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         barbershopId,
         name: fd.get("name"),

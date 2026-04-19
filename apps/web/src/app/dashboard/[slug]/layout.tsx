@@ -15,14 +15,44 @@ export default function DashboardSlugLayout({
 
   return (
     <BarbershopProvider slug={slug}>
-      <div className="min-h-screen flex bg-gray-50 text-gray-900">
-        <Sidebar />
-        <div className="flex-1 flex flex-col">
-          <MobileHeader />
-          <main className="flex-1 p-6 md:p-10">{children}</main>
+      <DashboardContent>{children}</DashboardContent>
+    </BarbershopProvider>
+  );
+}
+
+function DashboardContent({ children }: { children: React.ReactNode }) {
+  const { unauthorized, loading } = useBarbershop();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+      </div>
+    );
+  }
+
+  if (unauthorized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-900 px-4">
+        <div className="text-center">
+          <h1 className="text-3xl font-bold mb-2">Acceso denegado</h1>
+          <p className="text-gray-500 mb-6">No tienes permiso para acceder a este dashboard.</p>
+          <a href="/dashboard" className="px-6 py-2 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+            Ir a mis barberías
+          </a>
         </div>
       </div>
-    </BarbershopProvider>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex bg-gray-50 text-gray-900">
+      <Sidebar />
+      <div className="flex-1 flex flex-col">
+        <MobileHeader />
+        <main className="flex-1 p-6 md:p-10">{children}</main>
+      </div>
+    </div>
   );
 }
 

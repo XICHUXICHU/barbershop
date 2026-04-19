@@ -128,7 +128,7 @@ export default async function HomePage({ params }: Props) {
                     {service.durationMinutes} min
                   </span>
                   <span className="font-headline text-xl text-hc-primary font-bold shrink-0">
-                    ${(service.priceAmount / 100).toFixed(0)}
+                    ${service.priceAmount}
                   </span>
                   <span className="text-hc-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                     →

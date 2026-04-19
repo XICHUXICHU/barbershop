@@ -241,7 +241,7 @@ export function BookingWizard({ barbershopId, services, barbers }: Props) {
                             {service.durationMinutes} Min
                           </span>
                           <div className="text-2xl font-bold text-hc-on-surface">
-                            ${(service.priceAmount / 100).toFixed(2)}
+                            ${service.priceAmount}
                           </div>
                         </div>
                       </div>
@@ -284,7 +284,7 @@ export function BookingWizard({ barbershopId, services, barbers }: Props) {
                   </p>
                 </div>
                 <div className="text-xl font-bold text-hc-primary">
-                  ${(service.priceAmount / 100).toFixed(2)}
+                  ${service.priceAmount}
                 </div>
               </button>
             );
@@ -520,7 +520,7 @@ export function BookingWizard({ barbershopId, services, barbers }: Props) {
                           {selectedService?.name}
                         </span>
                         <span className="font-bold">
-                          ${selectedService ? (selectedService.priceAmount / 100).toFixed(2) : ""}
+                          ${selectedService?.priceAmount ?? ""}
                         </span>
                       </div>
                       <div className="flex justify-between">
@@ -590,7 +590,7 @@ export function BookingWizard({ barbershopId, services, barbers }: Props) {
                   {selectedService?.name}
                 </span>
                 <span className="font-bold">
-                  ${selectedService ? (selectedService.priceAmount / 100).toFixed(2) : ""}
+                  ${selectedService?.priceAmount ?? ""}
                 </span>
               </div>
               <div className="flex justify-between">
@@ -705,7 +705,7 @@ export function BookingWizard({ barbershopId, services, barbers }: Props) {
             <div className="pt-3 flex justify-between">
               <span className="text-hc-on-surface-variant">Total</span>
               <span className="font-bold text-hc-primary text-lg">
-                ${selectedService ? (selectedService.priceAmount / 100).toFixed(2) : ""}
+                ${selectedService?.priceAmount ?? ""}
               </span>
             </div>
           </div>

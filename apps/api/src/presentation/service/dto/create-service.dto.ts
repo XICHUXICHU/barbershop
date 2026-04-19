@@ -32,12 +32,12 @@ export class CreateServiceDto {
   @Min(5)
   durationMinutes!: number;
 
-  @ApiProperty({ example: 2500, description: "Price in cents (e.g. 2500 = $25.00)" })
+  @ApiProperty({ example: 150, description: "Precio en pesos enteros (MXN)" })
   @IsInt()
   @Min(0)
   priceAmount!: number;
 
-  @ApiPropertyOptional({ example: "USD" })
+  @ApiPropertyOptional({ example: "MXN" })
   @IsOptional()
   @IsString()
   priceCurrency?: string;

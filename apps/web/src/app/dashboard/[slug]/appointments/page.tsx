@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useBarbershop } from "../barbershop-context";
+import { useAuthFetch } from "../../../../lib/use-auth-fetch";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
@@ -19,6 +20,7 @@ interface AppointmentRow {
 
 export default function AppointmentsPage() {
   const { barbershopId } = useBarbershop();
+  const authFetch = useAuthFetch();
   const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [appointments, setAppointments] = useState<AppointmentRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -41,7 +43,7 @@ export default function AppointmentsPage() {
 
   async function handleCancel(id: string) {
     if (!confirm("¿Cancelar esta cita?")) return;
-    await fetch(`${API_BASE}/appointments/${id}/cancel`, { method: "PATCH" });
+    await authFetch(`/appointments/${id}/cancel`, { method: "PATCH" });
     load();
   }
 
@@ -55,7 +57,7 @@ export default function AppointmentsPage() {
   }
 
   async function handleConfirm(id: string) {
-    await fetch(`${API_BASE}/appointments/${id}/confirm`, { method: "PATCH" });
+    await authFetch(`/appointments/${id}/confirm`, { method: "PATCH" });
     const appointment = appointments.find((a) => a.id === id);
     if (appointment?.customer?.phone) {
       window.open(buildWhatsAppUrl(appointment), "_blank");
@@ -64,13 +66,13 @@ export default function AppointmentsPage() {
   }
 
   async function handleComplete(id: string) {
-    await fetch(`${API_BASE}/appointments/${id}/complete`, { method: "PATCH" });
+    await authFetch(`/appointments/${id}/complete`, { method: "PATCH" });
     load();
   }
 
   async function handleNoShow(id: string) {
     if (!confirm("¿Marcar como no asistió?")) return;
-    await fetch(`${API_BASE}/appointments/${id}/no-show`, { method: "PATCH" });
+    await authFetch(`/appointments/${id}/no-show`, { method: "PATCH" });
     load();
   }
 

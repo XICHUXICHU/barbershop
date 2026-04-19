@@ -1,8 +1,12 @@
-import { Controller, Get } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { Controller, Get, UseGuards } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { PrismaService } from "../../infrastructure/database/prisma.service";
+import { ClerkAuthGuard, Roles } from "../../infrastructure/auth";
 
 @ApiTags("Admin")
+@ApiBearerAuth()
+@UseGuards(ClerkAuthGuard)
+@Roles("admin")
 @Controller("admin")
 export class AdminController {
   constructor(private readonly prisma: PrismaService) {}

@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Patch, Param, Body, Inject } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { Controller, Get, Post, Patch, Param, Body, Inject, UseGuards, ForbiddenException } from "@nestjs/common";
+import { ApiTags, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import {
   GetBarbershopBySlugUseCase,
   CreateBarbershopUseCase,
@@ -9,6 +9,7 @@ import {
   IBarbershopRepository,
 } from "../../domain/repositories";
 import { CreateBarbershopDto } from "./dto/create-barbershop.dto";
+import { ClerkAuthGuard, CurrentUser } from "../../infrastructure/auth";
 
 @ApiTags("Barbershops")
 @Controller("barbershops")
@@ -45,14 +46,26 @@ export class BarbershopController {
   }
 
   @Post()
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Register a new barbershop" })
   async create(@Body() dto: CreateBarbershopDto) {
     return this.createBarbershop.execute(dto);
   }
 
   @Patch(":id")
+  @UseGuards(ClerkAuthGuard)
+  @ApiBearerAuth()
   @ApiOperation({ summary: "Update barbershop details" })
-  async update(@Param("id") id: string, @Body() body: Partial<CreateBarbershopDto>) {
+  async update(
+    @Param("id") id: string,
+    @Body() body: Partial<CreateBarbershopDto>,
+    @CurrentUser("userId") userId: string,
+  ) {
+    const shop = await this.barbershopRepo.findById(id);
+    if (!shop || shop.ownerId !== userId) {
+      throw new ForbiddenException("No tienes permiso para editar esta barbería");
+    }
     return this.barbershopRepo.update(id, body as any);
   }
 }

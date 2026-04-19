@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useBarbershop } from "../barbershop-context";
 import ImageUpload from "../components/image-upload";
+import { useAuthFetch } from "../../../../lib/use-auth-fetch";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
@@ -26,6 +27,7 @@ interface EditState {
 
 export default function ServicesPage() {
   const { barbershopId } = useBarbershop();
+  const authFetch = useAuthFetch();
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -64,9 +66,8 @@ export default function ServicesPage() {
   async function saveEdit(id: string) {
     if (!editState) return;
     setEditSaving(true);
-    await fetch(`${API}/services/${id}`, {
+    await authFetch(`/services/${id}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: editState.name,
         description: editState.description || null,
@@ -83,9 +84,8 @@ export default function ServicesPage() {
     e.preventDefault();
     setSaving(true);
     const fd = new FormData(e.currentTarget);
-    await fetch(`${API}/services`, {
+    await authFetch(`/services`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         barbershopId,
         name: fd.get("name"),
@@ -93,7 +93,7 @@ export default function ServicesPage() {
         imageUrl: newImageUrl,
         durationMinutes: Number(fd.get("duration")),
         priceAmount: Number(fd.get("price")),
-        priceCurrency: "USD",
+        priceCurrency: "MXN",
       }),
     });
     setSaving(false);
@@ -108,9 +108,8 @@ export default function ServicesPage() {
     const res = await fetch(`${API}/upload/image`, { method: "POST", body: formData });
     if (!res.ok) return;
     const data: { url: string } = await res.json();
-    await fetch(`${API}/services/${serviceId}`, {
+    await authFetch(`/services/${serviceId}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ imageUrl: data.url }),
     });
     load();
@@ -154,7 +153,7 @@ export default function ServicesPage() {
             <input name="duration" type="number" required min={5} className="w-full mt-1 bg-white border border-gray-200 rounded-lg px-3 py-2 text-gray-900" placeholder="30" />
           </label>
           <label className="block">
-            <span className="text-sm text-gray-500">Precio (USD)</span>
+            <span className="text-sm text-gray-500">Precio (MXN)</span>
             <input name="price" type="number" required min={0} step={0.01} className="w-full mt-1 bg-white border border-gray-200 rounded-lg px-3 py-2 text-gray-900" placeholder="25.00" />
           </label>
           <div className="col-span-2">
@@ -234,7 +233,7 @@ export default function ServicesPage() {
                       </label>
                       <div className="grid grid-cols-2 gap-2">
                         <label className="block">
-                          <span className="text-xs text-gray-500">Precio (USD)</span>
+                          <span className="text-xs text-gray-500">Precio (MXN)</span>
                           <input
                             type="number"
                             min={0}
@@ -287,7 +286,7 @@ export default function ServicesPage() {
                       </div>
                       {s.description && <p className="text-sm text-gray-500 mt-1">{s.description}</p>}
                       <div className="flex gap-4 mt-3 text-sm">
-                        <span className="text-blue-600 font-bold">${s.priceAmount.toFixed(2)}</span>
+                        <span className="text-blue-600 font-bold">${s.priceAmount} MXN</span>
                         <span className="text-gray-500">{s.durationMinutes} min</span>
                       </div>
                     </>

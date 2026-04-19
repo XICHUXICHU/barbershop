@@ -86,7 +86,7 @@ export default function AdminAppointmentsPage() {
                     <td className="px-4 py-3">{a.service?.name}</td>
                     <td className="px-4 py-3">{a.barber?.name}</td>
                     <td className="px-4 py-3 text-blue-600">
-                      ${a.service?.priceAmount?.toFixed(2)}
+                      ${a.service?.priceAmount} MXN
                     </td>
                     <td className="px-4 py-3">
                       <span

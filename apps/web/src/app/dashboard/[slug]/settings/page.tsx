@@ -3,6 +3,7 @@
 import { useEffect, useState, FormEvent } from "react";
 import { useBarbershop } from "../barbershop-context";
 import ImageUpload from "../components/image-upload";
+import { useAuthFetch } from "../../../../lib/use-auth-fetch";
 
 const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
 
@@ -33,6 +34,7 @@ interface DaySchedule {
 
 export default function SettingsPage() {
   const { barbershopId, barbershopName } = useBarbershop();
+  const authFetch = useAuthFetch();
   const [info, setInfo] = useState<ShopInfo>({
     name: "",
     phone: "",
@@ -88,9 +90,8 @@ export default function SettingsPage() {
     e.preventDefault();
     setSavingInfo(true);
     setInfoMsg("");
-    await fetch(`${API}/barbershops/${barbershopId}`, {
+    await authFetch(`/barbershops/${barbershopId}`, {
       method: "PATCH",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(info),
     });
     setSavingInfo(false);
@@ -102,9 +103,8 @@ export default function SettingsPage() {
     setSavingSchedule(true);
     setSchedMsg("");
     for (const day of schedule) {
-      await fetch(`${API}/schedules`, {
+      await authFetch(`/schedules`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ barbershopId, ...day }),
       });
     }
@@ -139,9 +139,8 @@ export default function SettingsPage() {
               onUploaded={(url) => {
                 setInfo((prev) => ({ ...prev, coverUrl: url }));
                 // Auto-save cover
-                fetch(`${API}/barbershops/${barbershopId}`, {
+                authFetch(`/barbershops/${barbershopId}`, {
                   method: "PATCH",
-                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ coverUrl: url }),
                 });
               }}
@@ -153,9 +152,8 @@ export default function SettingsPage() {
               onUploaded={(url) => {
                 setInfo((prev) => ({ ...prev, logoUrl: url }));
                 // Auto-save logo
-                fetch(`${API}/barbershops/${barbershopId}`, {
+                authFetch(`/barbershops/${barbershopId}`, {
                   method: "PATCH",
-                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ logoUrl: url }),
                 });
               }}
