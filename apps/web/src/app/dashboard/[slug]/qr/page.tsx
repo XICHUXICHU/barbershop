@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
-import QRCode from "react-qr-code";
+import { useRef, useState, useCallback, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useBarbershop } from "../barbershop-context";
+
+const QRCode = dynamic(() => import("react-qr-code"), { ssr: false });
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://barbershop-web-sigma.vercel.app";
 
@@ -18,11 +20,14 @@ type PosterStyle = (typeof POSTER_STYLES)[number];
 export default function QRPage() {
   const { barbershopName, barbershopSlug } = useBarbershop();
   const posterRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
   const [style, setStyle] = useState<PosterStyle>(POSTER_STYLES[1]);
   const [qrSize, setQrSize] = useState(220);
   const [showSubtext, setShowSubtext] = useState(true);
   const [customSubtext, setCustomSubtext] = useState("Escanea para reservar tu cita");
   const [exporting, setExporting] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   const publicUrl = `${SITE_URL}/${barbershopSlug}`;
 
@@ -30,10 +35,9 @@ export default function QRPage() {
     if (!posterRef.current) return;
     setExporting(true);
     try {
-      // Dynamic import to avoid SSR issues
       const { toPng } = await import("html-to-image");
       const dataUrl = await toPng(posterRef.current, {
-        pixelRatio: 4, // 4x for high-quality print
+        pixelRatio: 4,
         backgroundColor: style.bg,
       });
       const link = document.createElement("a");
@@ -61,9 +65,38 @@ export default function QRPage() {
     URL.revokeObjectURL(url);
   }, [barbershopSlug]);
 
-  const printPoster = useCallback(() => {
-    window.print();
-  }, []);
+  const printPoster = useCallback(async () => {
+    if (!posterRef.current) return;
+    try {
+      const { toPng } = await import("html-to-image");
+      const dataUrl = await toPng(posterRef.current, {
+        pixelRatio: 4,
+        backgroundColor: style.bg,
+      });
+      const win = window.open("", "_blank");
+      if (!win) return;
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Cartel QR — ${barbershopName}</title>
+            <style>
+              * { margin: 0; padding: 0; }
+              body { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #fff; }
+              img { max-width: 100%; max-height: 100vh; object-fit: contain; }
+              @media print { body { background: none; } img { max-height: none; width: 100%; } }
+            </style>
+          </head>
+          <body>
+            <img src="${dataUrl}" alt="Cartel QR" onload="setTimeout(()=>{window.print();},300)" />
+          </body>
+        </html>
+      `);
+      win.document.close();
+    } catch (err) {
+      console.error("Error printing:", err);
+    }
+  }, [style.bg, barbershopName]);
 
   return (
     <div>
@@ -72,7 +105,7 @@ export default function QRPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8">
         {/* Controls */}
-        <div className="space-y-6 print:hidden">
+        <div className="space-y-6">
           <section className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-4">
             <h2 className="text-lg font-semibold">Personalizar Cartel</h2>
 
@@ -184,10 +217,10 @@ export default function QRPage() {
 
         {/* Poster preview */}
         <div className="flex flex-col items-center">
-          <p className="text-sm text-gray-500 mb-3 print:hidden">Vista previa del cartel</p>
+          <p className="text-sm text-gray-500 mb-3">Vista previa del cartel</p>
           <div
             ref={posterRef}
-            className="rounded-2xl shadow-xl print:shadow-none print:rounded-none"
+            className="rounded-2xl shadow-xl"
             style={{
               backgroundColor: style.bg,
               padding: "48px 36px",
@@ -227,12 +260,14 @@ export default function QRPage() {
                 justifyContent: "center",
               }}
             >
-              <QRCode
-                value={publicUrl}
-                size={qrSize}
-                level="H"
-                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
-              />
+              {mounted && (
+                <QRCode
+                  value={publicUrl}
+                  size={qrSize}
+                  level="H"
+                  style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                />
+              )}
             </div>
 
             {/* Subtext */}
@@ -283,22 +318,6 @@ export default function QRPage() {
           </div>
         </div>
       </div>
-
-      {/* Print stylesheet */}
-      <style jsx global>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-          #__next {
-            visibility: hidden;
-          }
-          [data-poster-print],
-          [data-poster-print] * {
-            visibility: visible !important;
-          }
-        }
-      `}</style>
     </div>
   );
 }
