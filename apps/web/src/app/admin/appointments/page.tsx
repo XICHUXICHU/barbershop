@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+import { useAuthFetch } from "../../../lib/use-auth-fetch";
 
 interface AppointmentRow {
   id: string;
@@ -17,14 +16,15 @@ interface AppointmentRow {
 }
 
 export default function AdminAppointmentsPage() {
+  const authFetch = useAuthFetch();
   const [appointments, setAppointments] = useState<AppointmentRow[]>([]);
 
   useEffect(() => {
-    fetch(`${API}/admin/appointments/recent`)
+    authFetch("/admin/appointments/recent")
       .then((r) => r.json())
       .then((d) => setAppointments(Array.isArray(d) ? d : []))
       .catch(() => {});
-  }, []);
+  }, [authFetch]);
 
   const statusMap: Record<string, { label: string; color: string }> = {
     PENDING: { label: "Pendiente", color: "bg-yellow-600/30 text-yellow-300" },

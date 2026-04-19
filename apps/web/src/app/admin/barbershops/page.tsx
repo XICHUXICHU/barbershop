@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+import { useAuthFetch } from "../../../lib/use-auth-fetch";
 
 interface ShopRow {
   id: string;
@@ -17,10 +16,11 @@ interface ShopRow {
 }
 
 export default function AdminBarbershopsPage() {
+  const authFetch = useAuthFetch();
   const [shops, setShops] = useState<ShopRow[]>([]);
 
   const loadShops = () => {
-    fetch(`${API}/admin/barbershops`)
+    authFetch("/admin/barbershops")
       .then((r) => r.json())
       .then((d) => setShops(Array.isArray(d) ? d : []))
       .catch(() => {});
@@ -28,7 +28,7 @@ export default function AdminBarbershopsPage() {
 
   useEffect(() => {
     loadShops();
-  }, []);
+  }, [authFetch]);
 
   const toggleActive = async (id: string, currentStatus: boolean) => {
     const isConfirm = window.confirm(
@@ -39,9 +39,8 @@ export default function AdminBarbershopsPage() {
     if (!isConfirm) return;
 
     try {
-      const res = await fetch(`${API}/barbershops/${id}`, {
+      const res = await authFetch(`/barbershops/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ isActive: !currentStatus }),
       });
       if (res.ok) {

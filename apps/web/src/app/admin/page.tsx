@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-
-const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000/api";
+import { useAuthFetch } from "../../lib/use-auth-fetch";
 
 interface Stats {
   totalBarbershops: number;
@@ -22,19 +21,20 @@ interface ShopRow {
 }
 
 export default function AdminPage() {
+  const authFetch = useAuthFetch();
   const [stats, setStats] = useState<Stats | null>(null);
   const [shops, setShops] = useState<ShopRow[]>([]);
 
   useEffect(() => {
-    fetch(`${API}/admin/stats`)
+    authFetch("/admin/stats")
       .then((r) => r.json())
       .then(setStats)
       .catch(() => {});
-    fetch(`${API}/admin/barbershops`)
+    authFetch("/admin/barbershops")
       .then((r) => r.json())
       .then((d) => setShops(Array.isArray(d) ? d : []))
       .catch(() => {});
-  }, []);
+  }, [authFetch]);
 
   return (
     <div>
