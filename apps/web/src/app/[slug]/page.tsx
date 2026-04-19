@@ -29,7 +29,7 @@ export default async function HomePage({ params }: Props) {
   return (
     <>
       {/* ═══ HERO ═══ */}
-      <section className="relative min-h-screen flex items-end pb-24 md:pb-32 overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-end pb-16 md:pb-24 overflow-hidden">
         <div className="absolute inset-0 z-0">
           {shop.coverUrl ? (
             <img
@@ -40,17 +40,17 @@ export default async function HomePage({ params }: Props) {
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950" />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-hc-surface via-hc-surface/55 to-hc-surface/5" />
+          <div className="absolute inset-0 bg-gradient-to-t from-hc-surface via-hc-surface/70 to-hc-surface/30" />
         </div>
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12">
           <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-6">
             Barbería de Autor
           </p>
-          <h1 className="font-headline text-6xl sm:text-8xl md:text-[7rem] lg:text-[9rem] font-bold leading-[0.9] tracking-tighter text-hc-on-surface mb-8">
+          <h1 className="font-headline text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold leading-[0.9] tracking-tight text-white mb-6">
             {shop.name}
           </h1>
-          <div className="h-px w-16 bg-hc-primary mb-10" />
+          <div className="h-px w-16 bg-hc-primary mb-6" />
           <div className="flex flex-col sm:flex-row items-start gap-4">
             <Link
               href={`/${slug}/reservar`}
@@ -78,9 +78,9 @@ export default async function HomePage({ params }: Props) {
 
       {/* ═══ SERVICIOS DESTACADOS ═══ */}
       {activeServices.length > 0 && (
-        <section className="py-24 md:py-32">
+        <section className="py-14 md:py-20">
           <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <div className="flex items-end justify-between mb-12 gap-8 border-b border-hc-outline-variant/20 pb-8">
+            <div className="flex items-end justify-between mb-8 gap-8 border-b border-hc-outline-variant/20 pb-6">
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">
                 Servicios
               </h2>
@@ -98,7 +98,7 @@ export default async function HomePage({ params }: Props) {
                   key={service.id}
                   className="group flex items-center gap-6 py-7 hover:pl-2 transition-all duration-300"
                 >
-                  <span className="font-body text-xs text-hc-outline w-6 shrink-0 select-none">
+                  <span className="font-body text-sm text-hc-on-surface-variant w-6 shrink-0 select-none">
                     0{i + 1}
                   </span>
                   <div className="w-14 h-14 shrink-0 overflow-hidden bg-hc-surface-container-high">
@@ -124,7 +124,7 @@ export default async function HomePage({ params }: Props) {
                       </p>
                     )}
                   </div>
-                  <span className="hidden md:block text-xs text-hc-outline uppercase tracking-widest shrink-0">
+                  <span className="hidden md:block text-sm text-hc-on-surface-variant uppercase tracking-wider shrink-0">
                     {service.durationMinutes} min
                   </span>
                   <span className="font-headline text-xl text-hc-primary font-bold shrink-0">
@@ -142,9 +142,9 @@ export default async function HomePage({ params }: Props) {
 
       {/* ═══ EQUIPO ═══ */}
       {activeBarbers.length > 0 && (
-        <section className="py-24 md:py-32 bg-hc-surface-container-lowest">
+        <section className="py-14 md:py-20 bg-hc-surface-container-lowest">
           <div className="max-w-7xl mx-auto px-6 md:px-12">
-            <div className="flex items-end justify-between mb-12 border-b border-hc-outline-variant/20 pb-8">
+            <div className="flex items-end justify-between mb-8 border-b border-hc-outline-variant/20 pb-6">
               <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">
                 Equipo
               </h2>
@@ -206,12 +206,12 @@ export default async function HomePage({ params }: Props) {
       )}
 
       {/* ═══ CTA EDITORIAL ═══ */}
-      <section className="py-24 md:py-40 px-6 md:px-12">
-        <div className="max-w-7xl mx-auto border-t border-b border-hc-outline-variant/20 py-20 text-center">
+      <section className="py-14 md:py-20 px-6 md:px-12">
+        <div className="max-w-7xl mx-auto border-t border-b border-hc-outline-variant/20 py-12 text-center">
           <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-6">
             Agenda tu visita
           </p>
-          <h2 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter mb-12 text-hc-on-surface">
+          <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tight mb-8 text-hc-on-surface">
             ¿Listo para tu
             <br />
             <span className="italic text-hc-primary">próxima cita?</span>
@@ -227,7 +227,7 @@ export default async function HomePage({ params }: Props) {
 
       {/* ═══ CONTACTO ═══ */}
       {(shop.address || shop.phone) && (
-        <section className="py-16 bg-hc-surface-container-lowest border-t border-hc-outline-variant/10">
+        <section className="py-10 bg-hc-surface-container-lowest border-t border-hc-outline-variant/10">
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-16 flex-wrap">
             {shop.address && (
               <div className="flex items-start gap-3">

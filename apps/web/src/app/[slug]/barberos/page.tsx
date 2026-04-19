@@ -26,13 +26,13 @@ export default async function BarberosPage({ params }: Props) {
   return (
     <>
       {/* Header */}
-      <header className="pt-36 pb-16 px-6 md:px-12 max-w-7xl mx-auto border-b border-hc-outline-variant/20">
+      <header className="pt-28 pb-10 px-6 md:px-12 max-w-7xl mx-auto border-b border-hc-outline-variant/20">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-4">
               {shop.name}
             </p>
-            <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-none">
+            <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight leading-none text-hc-on-surface">
               Equipo
             </h1>
           </div>
@@ -43,7 +43,7 @@ export default async function BarberosPage({ params }: Props) {
       </header>
 
       {/* Perfiles */}
-      <main className="px-6 md:px-12 max-w-7xl mx-auto py-16">
+      <main className="px-6 md:px-12 max-w-7xl mx-auto py-10">
         {activeBarbers.length === 0 ? (
           <div className="text-center py-32">
             <AppIcon name="groups" className="text-hc-outline text-5xl mb-6" />
@@ -91,11 +91,11 @@ export default async function BarberosPage({ params }: Props) {
                     <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-4">
                       Barbero
                     </p>
-                    <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tighter mb-6">
+                    <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-4 text-hc-on-surface">
                       {barber.name}
                     </h2>
-                    <div className="h-px w-12 bg-hc-primary mb-8" />
-                    <p className="text-hc-on-surface-variant text-sm leading-relaxed mb-10 max-w-sm">
+                    <div className="h-px w-12 bg-hc-primary mb-6" />
+                    <p className="text-hc-on-surface-variant text-sm leading-relaxed mb-8 max-w-sm">
                       Especialista en cortes de precisión con años de experiencia
                       en el arte de la barbería.
                     </p>
@@ -113,8 +113,8 @@ export default async function BarberosPage({ params }: Props) {
         )}
 
         {/* CTA */}
-        <div className="mt-24 border-t border-b border-hc-outline-variant/20 py-20 text-center">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold tracking-tighter mb-8">
+        <div className="mt-14 border-t border-b border-hc-outline-variant/20 py-12 text-center">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-6 text-hc-on-surface">
             ¿Listo para su{" "}
             <span className="italic text-hc-primary">transformación?</span>
           </h2>

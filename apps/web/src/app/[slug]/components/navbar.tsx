@@ -38,14 +38,14 @@ export function Navbar({ shopName, slug, phone }: NavbarProps) {
       className={`fixed top-0 w-full z-50 transition-all duration-500 ${
         scrolled
           ? "bg-hc-surface/95 backdrop-blur-md border-b border-hc-outline-variant/20 py-3"
-          : "bg-transparent py-5"
+          : "bg-gradient-to-b from-black/60 to-transparent py-4"
       }`}
     >
       <div className="flex justify-between items-center px-6 md:px-12 max-w-screen-2xl mx-auto">
         {/* Logo */}
         <Link
           href={`/${slug}`}
-          className="font-headline text-lg md:text-xl italic text-hc-on-surface hover:text-hc-primary transition-colors"
+          className="font-headline text-lg md:text-xl italic text-white hover:text-hc-primary transition-colors"
         >
           {shopName}
         </Link>
@@ -59,7 +59,7 @@ export function Navbar({ shopName, slug, phone }: NavbarProps) {
               className={`relative font-body text-xs tracking-widest uppercase pb-1 transition-colors ${
                 isActive(link.href)
                   ? "text-hc-primary"
-                  : "text-hc-on-surface-variant hover:text-hc-on-surface"
+                  : "text-white/80 hover:text-white"
               }`}
             >
               {link.label}
@@ -75,7 +75,7 @@ export function Navbar({ shopName, slug, phone }: NavbarProps) {
           {phone && (
             <a
               href={`tel:${phone}`}
-              className="hidden lg:block text-xs text-hc-on-surface-variant hover:text-hc-primary transition-colors tracking-widest uppercase"
+              className="hidden lg:block text-xs text-white/70 hover:text-hc-primary transition-colors tracking-widest uppercase"
             >
               {phone}
             </a>

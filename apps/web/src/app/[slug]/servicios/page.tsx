@@ -26,13 +26,13 @@ export default async function ServiciosPage({ params }: Props) {
   return (
     <>
       {/* Header */}
-      <header className="pt-36 pb-16 px-6 md:px-12 max-w-7xl mx-auto border-b border-hc-outline-variant/20">
+      <header className="pt-28 pb-10 px-6 md:px-12 max-w-7xl mx-auto border-b border-hc-outline-variant/20">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
             <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-4">
               {shop.name}
             </p>
-            <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter leading-none">
+            <h1 className="font-headline text-4xl md:text-5xl font-bold tracking-tight leading-none text-hc-on-surface">
               Servicios
             </h1>
           </div>
@@ -43,7 +43,7 @@ export default async function ServiciosPage({ params }: Props) {
       </header>
 
       {/* Lista de Servicios */}
-      <section className="max-w-7xl mx-auto px-6 md:px-12 py-16">
+      <section className="max-w-7xl mx-auto px-6 md:px-12 py-10">
         {activeServices.length === 0 ? (
           <div className="text-center py-32">
             <AppIcon name="content_cut" className="text-hc-outline text-5xl mb-6" />
@@ -57,9 +57,9 @@ export default async function ServiciosPage({ params }: Props) {
             {activeServices.map((service, i) => (
               <div
                 key={service.id}
-                className="group flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-6 py-8 md:items-center hover:pl-2 transition-all duration-300"
+                className="group flex flex-col md:grid md:grid-cols-12 gap-4 md:gap-6 py-6 md:items-center hover:pl-2 transition-all duration-300"
               >
-                <span className="hidden md:block font-body text-xs text-hc-outline md:col-span-1">
+                <span className="hidden md:block font-body text-sm text-hc-on-surface-variant md:col-span-1">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="md:col-span-2 w-16 h-16 overflow-hidden bg-hc-surface-container-high shrink-0">
@@ -76,7 +76,7 @@ export default async function ServiciosPage({ params }: Props) {
                   )}
                 </div>
                 <div className="md:col-span-5">
-                  <h3 className="font-headline text-xl md:text-2xl font-bold text-hc-on-surface">
+                  <h3 className="font-headline text-lg md:text-xl font-bold text-hc-on-surface">
                     {service.name}
                   </h3>
                   {service.description && (
@@ -86,8 +86,8 @@ export default async function ServiciosPage({ params }: Props) {
                   )}
                 </div>
                 <div className="md:col-span-2 flex items-center gap-1.5">
-                  <AppIcon name="schedule" className="text-hc-outline text-sm" />
-                  <span className="text-xs text-hc-outline uppercase tracking-widest">
+                  <AppIcon name="schedule" className="text-hc-on-surface-variant text-sm" />
+                  <span className="text-sm text-hc-on-surface-variant">
                     {service.durationMinutes} min
                   </span>
                 </div>
@@ -109,12 +109,12 @@ export default async function ServiciosPage({ params }: Props) {
       </section>
 
       {/* CTA */}
-      <section className="px-6 md:px-12 max-w-7xl mx-auto pb-24">
-        <div className="border-t border-b border-hc-outline-variant/20 py-20 text-center">
+      <section className="px-6 md:px-12 max-w-7xl mx-auto pb-14">
+        <div className="border-t border-b border-hc-outline-variant/20 py-12 text-center">
           <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-6">
             Sin esperas
           </p>
-          <h2 className="font-headline text-4xl md:text-6xl font-bold tracking-tighter mb-10">
+          <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight mb-8 text-hc-on-surface">
             Elige tu servicio,
             <br />
             <span className="italic text-hc-primary">nosotros hacemos el resto.</span>

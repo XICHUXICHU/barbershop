@@ -11,7 +11,7 @@ interface FooterProps {
 export function Footer({ shopName, slug, address, phone }: FooterProps) {
   return (
     <footer className="bg-hc-surface-container-lowest border-t border-hc-outline-variant/10">
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Brand + contact */}
         <div>
           <p className="font-headline text-xl italic text-hc-on-surface mb-6">
@@ -37,7 +37,7 @@ export function Footer({ shopName, slug, address, phone }: FooterProps) {
 
         {/* Navigation */}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-widest text-hc-outline mb-6">
+          <h4 className="text-xs font-bold uppercase tracking-widest text-hc-on-surface-variant mb-6">
             Navegación
           </h4>
           <ul className="space-y-3">
@@ -61,7 +61,7 @@ export function Footer({ shopName, slug, address, phone }: FooterProps) {
 
         {/* CTA column */}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-widest text-hc-outline mb-6">
+          <h4 className="text-xs font-bold uppercase tracking-widest text-hc-on-surface-variant mb-6">
             ¿Primera visita?
           </h4>
           <p className="text-hc-on-surface-variant text-sm mb-6 leading-relaxed">
