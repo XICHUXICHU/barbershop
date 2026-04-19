@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { AppIcon } from "@/components/app-icon";
+import GallerySection from "./gallery-section";
 import type { BarbershopDto, ServiceDto, BarberDto } from "@barber/shared";
 
 interface Props {
@@ -225,25 +226,7 @@ export default async function HomePage({ params }: Props) {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
-              {gallery.map((photo) => (
-                <div
-                  key={photo.id}
-                  className="group relative aspect-square overflow-hidden bg-hc-surface-container-high"
-                >
-                  <img
-                    src={photo.imageUrl}
-                    alt={photo.caption || "Trabajo realizado"}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {photo.caption && (
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                      <p className="text-white text-sm font-body">{photo.caption}</p>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+            <GallerySection gallery={gallery} />
           </div>
         </section>
       )}
