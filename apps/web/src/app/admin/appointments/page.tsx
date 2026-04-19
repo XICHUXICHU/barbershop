@@ -39,14 +39,14 @@ export default function AdminAppointmentsPage() {
       <h1 className="text-3xl font-bold mb-8">Citas Recientes</h1>
 
       {appointments.length === 0 ? (
-        <p className="text-[gray-500]">
+        <p className="text-gray-500">
           No hay citas registradas aún.
         </p>
       ) : (
-        <div className="bg-[white] border border-gray-200 rounded-xl overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           <table className="w-full text-left text-sm">
             <thead>
-              <tr className="border-b border-gray-200 text-[gray-500]">
+              <tr className="border-b border-gray-200 text-gray-500">
                 <th className="px-4 py-3">Barbería</th>
                 <th className="px-4 py-3">Fecha</th>
                 <th className="px-4 py-3">Hora</th>
@@ -71,7 +71,7 @@ export default function AdminAppointmentsPage() {
                     <td className="px-4 py-3 font-medium">
                       {a.barbershop?.name}
                     </td>
-                    <td className="px-4 py-3 text-[gray-500]">
+                    <td className="px-4 py-3 text-gray-500">
                       {a.date?.split("T")[0]}
                     </td>
                     <td className="px-4 py-3 font-mono">
@@ -79,13 +79,13 @@ export default function AdminAppointmentsPage() {
                     </td>
                     <td className="px-4 py-3">
                       <div>{a.customer?.name}</div>
-                      <div className="text-xs text-[gray-500]">
+                      <div className="text-xs text-gray-500">
                         {a.customer?.phone}
                       </div>
                     </td>
                     <td className="px-4 py-3">{a.service?.name}</td>
                     <td className="px-4 py-3">{a.barber?.name}</td>
-                    <td className="px-4 py-3 text-[blue-600]">
+                    <td className="px-4 py-3 text-blue-600">
                       ${a.service?.priceAmount?.toFixed(2)}
                     </td>
                     <td className="px-4 py-3">

@@ -51,9 +51,9 @@ export default function AdminPage() {
         ].map((c) => (
           <div
             key={c.label}
-            className="bg-[white] border border-gray-200 rounded-xl p-5"
+            className="bg-white border border-gray-200 rounded-xl p-5"
           >
-            <p className="text-sm text-[gray-500]">{c.label}</p>
+            <p className="text-sm text-gray-500">{c.label}</p>
             <p className="text-3xl font-bold mt-1">
               {c.value ?? "—"}
             </p>
@@ -64,14 +64,14 @@ export default function AdminPage() {
       {/* Barbershops overview */}
       <h2 className="text-xl font-semibold mb-4">Barberías Registradas</h2>
       {shops.length === 0 ? (
-        <p className="text-[gray-500]">
+        <p className="text-gray-500">
           No hay barberías registradas aún.
         </p>
       ) : (
-        <div className="bg-[white] border border-gray-200 rounded-xl overflow-hidden">
+        <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-gray-200 text-[gray-500] text-sm">
+              <tr className="border-b border-gray-200 text-gray-500 text-sm">
                 <th className="px-4 py-3">Nombre</th>
                 <th className="px-4 py-3">Slug</th>
                 <th className="px-4 py-3">Barberos</th>
@@ -88,20 +88,20 @@ export default function AdminPage() {
                   className="border-b border-gray-200 last:border-0"
                 >
                   <td className="px-4 py-3 font-medium">{s.name}</td>
-                  <td className="px-4 py-3 font-mono text-sm text-[gray-500]">
+                  <td className="px-4 py-3 font-mono text-sm text-gray-500">
                     {s.slug}
                   </td>
                   <td className="px-4 py-3">{s._count.barbers}</td>
                   <td className="px-4 py-3">{s._count.services}</td>
                   <td className="px-4 py-3">{s._count.appointments}</td>
-                  <td className="px-4 py-3 text-sm text-[gray-500]">
+                  <td className="px-4 py-3 text-sm text-gray-500">
                     {new Date(s.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-4 py-3">
                     <Link
                       href={`/${s.slug}`}
                       target="_blank"
-                      className="text-xs text-[blue-600] hover:underline"
+                      className="text-xs text-blue-600 hover:underline"
                     >
                       Ver página
                     </Link>

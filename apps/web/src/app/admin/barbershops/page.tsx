@@ -59,7 +59,7 @@ export default function AdminBarbershopsPage() {
       <h1 className="text-3xl font-bold mb-8">Barberías</h1>
 
       {shops.length === 0 ? (
-        <p className="text-[gray-500]">
+        <p className="text-gray-500">
           No hay barberías registradas.
         </p>
       ) : (
@@ -67,7 +67,7 @@ export default function AdminBarbershopsPage() {
           {shops.map((s) => (
             <div
               key={s.id}
-              className="bg-[white] border border-gray-200 rounded-xl p-6"
+              className="bg-white border border-gray-200 rounded-xl p-6"
             >
               <div className="flex items-start justify-between">
                 <div>
@@ -83,7 +83,7 @@ export default function AdminBarbershopsPage() {
                       {s.isActive ? "Activa" : "Suspendida"}
                     </span>
                   </h3>
-                  <p className="text-sm text-[gray-500]">
+                  <p className="text-sm text-gray-500">
                     /{s.slug} · {s.phone || "Sin teléfono"} ·{" "}
                     {s.address || "Sin dirección"}
                   </p>
@@ -102,7 +102,7 @@ export default function AdminBarbershopsPage() {
                   <Link
                     href={`/${s.slug}`}
                     target="_blank"
-                    className="text-sm text-[blue-600] hover:underline"
+                    className="text-sm text-blue-600 hover:underline"
                   >
                     Ver página →
                   </Link>
@@ -110,19 +110,19 @@ export default function AdminBarbershopsPage() {
               </div>
               <div className="flex gap-6 mt-4 text-sm">
                 <div>
-                  <span className="text-[gray-500]">Barberos:</span>{" "}
+                  <span className="text-gray-500">Barberos:</span>{" "}
                   <span className="font-medium">{s._count.barbers}</span>
                 </div>
                 <div>
-                  <span className="text-[gray-500]">Servicios:</span>{" "}
+                  <span className="text-gray-500">Servicios:</span>{" "}
                   <span className="font-medium">{s._count.services}</span>
                 </div>
                 <div>
-                  <span className="text-[gray-500]">Citas:</span>{" "}
+                  <span className="text-gray-500">Citas:</span>{" "}
                   <span className="font-medium">{s._count.appointments}</span>
                 </div>
                 <div>
-                  <span className="text-[gray-500]">Registrada:</span>{" "}
+                  <span className="text-gray-500">Registrada:</span>{" "}
                   <span className="font-medium">
                     {new Date(s.createdAt).toLocaleDateString()}
                   </span>
