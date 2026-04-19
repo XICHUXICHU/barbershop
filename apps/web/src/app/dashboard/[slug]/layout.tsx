@@ -1,7 +1,7 @@
 "use client";
 
 import { use } from "react";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { BarbershopProvider, useBarbershop } from "./barbershop-context";
 
 export default function DashboardSlugLayout({
@@ -25,6 +25,8 @@ export default function DashboardSlugLayout({
 
 function Sidebar() {
   const { barbershopName, barbershopSlug } = useBarbershop();
+  const { user } = useUser();
+  const isAdmin = (user?.publicMetadata as { role?: string })?.role === "admin";
 
   return (
     <aside className="w-64 bg-white shadow-sm border-r border-gray-200 p-6 hidden md:flex flex-col">
@@ -62,12 +64,14 @@ function Sidebar() {
         >
           ← Mis Barberías
         </a>
-        <a
-          href="/admin"
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600"
-        >
-          🛡️ Super Admin
-        </a>
+        {isAdmin && (
+          <a
+            href="/admin"
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600"
+          >
+            🛡️ Super Admin
+          </a>
+        )}
       </div>
       
       <div className="mt-4 pt-4 border-t border-gray-200">
