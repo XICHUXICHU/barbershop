@@ -8,6 +8,12 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+interface GalleryPhoto {
+  id: string;
+  imageUrl: string;
+  caption: string | null;
+}
+
 export default async function HomePage({ params }: Props) {
   const { slug } = await params;
 
@@ -18,9 +24,10 @@ export default async function HomePage({ params }: Props) {
     notFound();
   }
 
-  const [services, barbers] = await Promise.all([
+  const [services, barbers, gallery] = await Promise.all([
     apiFetch<ServiceDto[]>(`/services/barbershop/${shop.id}`),
     apiFetch<BarberDto[]>(`/barbers/barbershop/${shop.id}`),
+    apiFetch<GalleryPhoto[]>(`/gallery/barbershop/${shop.id}`).catch(() => [] as GalleryPhoto[]),
   ]);
 
   const activeServices = services.filter((s) => s.isActive).slice(0, 4);
@@ -198,6 +205,42 @@ export default async function HomePage({ params }: Props) {
                       Reservar
                     </Link>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ═══ GALERÍA DE TRABAJOS ═══ */}
+      {gallery.length > 0 && (
+        <section className="py-14 md:py-20">
+          <div className="max-w-7xl mx-auto px-6 md:px-12">
+            <div className="flex items-end justify-between mb-8 border-b border-hc-outline-variant/20 pb-6">
+              <h2 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">
+                Nuestro Trabajo
+              </h2>
+              <span className="text-hc-on-surface-variant text-xs uppercase tracking-widest font-body">
+                {gallery.length} fotos
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
+              {gallery.slice(0, 8).map((photo) => (
+                <div
+                  key={photo.id}
+                  className="group relative aspect-square overflow-hidden bg-hc-surface-container-high"
+                >
+                  <img
+                    src={photo.imageUrl}
+                    alt={photo.caption || "Trabajo realizado"}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  {photo.caption && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                      <p className="text-white text-sm font-body">{photo.caption}</p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

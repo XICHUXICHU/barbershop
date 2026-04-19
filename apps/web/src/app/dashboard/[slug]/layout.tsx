@@ -96,6 +96,7 @@ function MobileHeader() {
               <NavItem href={`/dashboard/${barbershopSlug}/appointments`} label="Citas" icon="📅" />
               <NavItem href={`/dashboard/${barbershopSlug}/services`} label="Servicios" icon="✂️" />
               <NavItem href={`/dashboard/${barbershopSlug}/barbers`} label="Barberos" icon="👤" />
+              <NavItem href={`/dashboard/${barbershopSlug}/gallery`} label="Galería" icon="📷" />
               <NavItem href={`/dashboard/${barbershopSlug}/reports`} label="Reportes" icon="📈" />
               <NavItem href={`/dashboard/${barbershopSlug}/qr`} label="Código QR" icon="📱" />
               <NavItem href={`/dashboard/${barbershopSlug}/settings`} label="Configuración" icon="⚙️" />
@@ -136,6 +137,7 @@ function Sidebar() {
         <NavItem href={`/dashboard/${barbershopSlug}/appointments`} label="Citas" icon="📅" />
         <NavItem href={`/dashboard/${barbershopSlug}/services`} label="Servicios" icon="✂️" />
         <NavItem href={`/dashboard/${barbershopSlug}/barbers`} label="Barberos" icon="👤" />
+        <NavItem href={`/dashboard/${barbershopSlug}/gallery`} label="Galería" icon="📷" />
         <NavItem href={`/dashboard/${barbershopSlug}/reports`} label="Reportes" icon="📈" />
         <NavItem href={`/dashboard/${barbershopSlug}/qr`} label="Código QR" icon="📱" />
         <NavItem href={`/dashboard/${barbershopSlug}/settings`} label="Configuración" icon="⚙️" />

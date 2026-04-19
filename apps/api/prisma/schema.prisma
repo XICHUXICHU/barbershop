@@ -26,6 +26,7 @@ model Barbershop {
   services     Service[]
   appointments Appointment[]
   schedules    BarbershopSchedule[]
+  gallery      GalleryPhoto[]
 
   @@map("barbershops")
 }
@@ -120,4 +121,17 @@ model BarbershopSchedule {
 
   @@unique([barbershopId, dayOfWeek])
   @@map("barbershop_schedules")
+}
+
+model GalleryPhoto {
+  id           String   @id @default(uuid())
+  barbershopId String   @map("barbershop_id")
+  imageUrl     String   @map("image_url")
+  caption      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  barbershop Barbershop @relation(fields: [barbershopId], references: [id], onDelete: Cascade)
+
+  @@index([barbershopId])
+  @@map("gallery_photos")
 }
