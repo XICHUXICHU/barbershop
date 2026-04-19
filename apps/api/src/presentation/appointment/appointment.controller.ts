@@ -68,4 +68,16 @@ export class AppointmentController {
   async confirm(@Param("id") id: string) {
     return this.appointmentRepo.updateStatus(id, "confirmed");
   }
+
+  @Patch(":id/complete")
+  @ApiOperation({ summary: "Mark an appointment as completed" })
+  async complete(@Param("id") id: string) {
+    return this.appointmentRepo.updateStatus(id, "completed");
+  }
+
+  @Patch(":id/no-show")
+  @ApiOperation({ summary: "Mark an appointment as no-show" })
+  async noShow(@Param("id") id: string) {
+    return this.appointmentRepo.updateStatus(id, "no_show");
+  }
 }

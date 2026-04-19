@@ -47,12 +47,11 @@ export default function AppointmentsPage() {
 
   function buildWhatsAppUrl(appointment: AppointmentRow) {
     const phone = appointment.customer?.phone?.replace(/\D/g, "") ?? "";
-    const fullPhone = phone.startsWith("52") ? phone : `52${phone}`;
     const name = appointment.customer?.name ?? "cliente";
     const service = appointment.service?.name ?? "tu servicio";
     const time = appointment.startTime ?? "";
     const msg = `¡Hola ${name}! 👋 Tu cita para *${service}* a las *${time}* ha sido *confirmada* ✅. ¡Te esperamos!`;
-    return `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
   }
 
   async function handleConfirm(id: string) {
@@ -61,6 +60,17 @@ export default function AppointmentsPage() {
     if (appointment?.customer?.phone) {
       window.open(buildWhatsAppUrl(appointment), "_blank");
     }
+    load();
+  }
+
+  async function handleComplete(id: string) {
+    await fetch(`${API_BASE}/appointments/${id}/complete`, { method: "PATCH" });
+    load();
+  }
+
+  async function handleNoShow(id: string) {
+    if (!confirm("¿Marcar como no asistió?")) return;
+    await fetch(`${API_BASE}/appointments/${id}/no-show`, { method: "PATCH" });
     load();
   }
 
@@ -115,15 +125,31 @@ export default function AppointmentsPage() {
                         Confirmar
                       </button>
                     )}
-                    {a.status === "CONFIRMED" && a.customer?.phone && (
-                      <a
-                        href={buildWhatsAppUrl(a)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200 inline-block"
-                      >
-                        📱 WhatsApp
-                      </a>
+                    {a.status === "CONFIRMED" && (
+                      <>
+                        <button
+                          onClick={() => handleComplete(a.id)}
+                          className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200"
+                        >
+                          ✅ Completar
+                        </button>
+                        <button
+                          onClick={() => handleNoShow(a.id)}
+                          className="text-xs bg-gray-100 text-gray-800 px-2 py-1 rounded hover:bg-gray-200"
+                        >
+                          No asistió
+                        </button>
+                        {a.customer?.phone && (
+                          <a
+                            href={buildWhatsAppUrl(a)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200 inline-block"
+                          >
+                            📱 WhatsApp
+                          </a>
+                        )}
+                      </>
                     )}
                     {(a.status === "PENDING" || a.status === "CONFIRMED") && (
                       <button

@@ -83,7 +83,7 @@ export default function RegisterPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <label className="block">
-            <span className="text-sm text-[gray-500]">
+            <span className="text-sm text-gray-500">
               Nombre de tu barbería
             </span>
             <input
@@ -92,17 +92,17 @@ export default function RegisterPage() {
               onChange={(e) => handleNameChange(e.target.value)}
               placeholder="Ej: Fresh Cuts Barber"
               required
-              className="w-full mt-1 bg-[white] border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-[blue-600] focus:outline-none"
+              className="w-full mt-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-600 focus:outline-none"
             />
           </label>
 
           <label className="block">
-            <span className="text-sm text-[gray-500]">
+            <span className="text-sm text-gray-500">
               URL de tu página
             </span>
-            <div className="flex items-center mt-1 bg-[white] border border-gray-200 rounded-xl overflow-hidden">
-              <span className="px-3 text-[gray-500] text-sm bg-[white]">
-                barberbook.com/
+            <div className="flex items-center mt-1 bg-white border border-gray-200 rounded-xl overflow-hidden">
+              <span className="px-3 text-gray-500 text-sm bg-white">
+                barbershop-web-sigma.vercel.app/
               </span>
               <input
                 type="text"
@@ -118,7 +118,7 @@ export default function RegisterPage() {
           </label>
 
           <label className="block">
-            <span className="text-sm text-[gray-500]">
+            <span className="text-sm text-gray-500">
               Teléfono / WhatsApp
             </span>
             <input
@@ -127,12 +127,12 @@ export default function RegisterPage() {
               onChange={(e) => setPhone(e.target.value)}
               placeholder="+52 55 1234 5678"
               required
-              className="w-full mt-1 bg-[white] border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-[blue-600] focus:outline-none"
+              className="w-full mt-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-600 focus:outline-none"
             />
           </label>
 
           <label className="block">
-            <span className="text-sm text-[gray-500]">
+            <span className="text-sm text-gray-500">
               Dirección
             </span>
             <input
@@ -141,24 +141,24 @@ export default function RegisterPage() {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Calle Principal #123, Colonia, Ciudad"
               required
-              className="w-full mt-1 bg-[white] border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-[blue-600] focus:outline-none"
+              className="w-full mt-1 bg-white border border-gray-200 rounded-xl px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-600 focus:outline-none"
             />
           </label>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-[blue-600] text-gray-900 font-semibold text-lg hover:bg-[blue-700] transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            className="w-full py-3 rounded-xl bg-blue-600 text-white font-semibold text-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
           >
             {loading ? "Registrando..." : "Crear mi Barbería"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-[gray-500] mt-6">
+        <p className="text-center text-sm text-gray-500 mt-6">
           ¿Ya tienes cuenta?{" "}
           <a
             href="/dashboard"
-            className="text-[blue-600] hover:underline"
+            className="text-blue-600 hover:underline"
           >
             Ir al panel
           </a>

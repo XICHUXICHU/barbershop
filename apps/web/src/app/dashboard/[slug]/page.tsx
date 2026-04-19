@@ -35,7 +35,7 @@ export default function DashboardPage() {
       .finally(() => setLoading(false));
   }, [barbershopId]);
 
-  const confirmed = appointments.filter(
+  const active = appointments.filter(
     (a) => a.status === "CONFIRMED" || a.status === "PENDING",
   );
 
@@ -53,10 +53,11 @@ export default function DashboardPage() {
       <p className="text-gray-500 mb-8">{barbershopName}</p>
 
       {/* Stats */}
-      <div className="grid md:grid-cols-4 gap-4 mb-10">
-        <StatCard label="Citas Hoy" value={String(confirmed.length)} icon="📅" />
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+        <StatCard label="Citas Hoy" value={String(active.length)} icon="📅" />
         <StatCard label="Pendientes" value={String(appointments.filter((a) => a.status === "PENDING").length)} icon="⏳" />
-        <StatCard label="Completadas" value={String(appointments.filter((a) => a.status === "COMPLETED").length)} icon="✅" />
+        <StatCard label="Confirmadas" value={String(appointments.filter((a) => a.status === "CONFIRMED").length)} icon="✅" />
+        <StatCard label="Completadas" value={String(appointments.filter((a) => a.status === "COMPLETED").length)} icon="🏁" />
         <StatCard label="Canceladas" value={String(appointments.filter((a) => a.status === "CANCELLED").length)} icon="❌" />
       </div>
 
