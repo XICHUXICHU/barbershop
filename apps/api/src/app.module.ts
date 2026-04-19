@@ -9,6 +9,7 @@ import { AvailabilityModule } from "./presentation/availability/availability.mod
 import { ScheduleModule } from "./presentation/schedule/schedule.module";
 import { AdminModule } from "./presentation/admin/admin.module";
 import { UploadModule } from "./presentation/upload/upload.module";
+import { ReportsModule } from "./presentation/reports/reports.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UploadModule } from "./presentation/upload/upload.module";
     ScheduleModule,
     AdminModule,
     UploadModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}
