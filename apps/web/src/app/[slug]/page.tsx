@@ -226,7 +226,7 @@ export default async function HomePage({ params }: Props) {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1">
-              {gallery.slice(0, 8).map((photo) => (
+              {gallery.map((photo) => (
                 <div
                   key={photo.id}
                   className="group relative aspect-square overflow-hidden bg-hc-surface-container-high"
