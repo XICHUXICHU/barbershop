@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AppIcon } from "@/components/app-icon";
 import { Menu, X } from "lucide-react";
 
 interface NavbarProps {
@@ -15,6 +14,13 @@ interface NavbarProps {
 export function Navbar({ shopName, slug, phone }: NavbarProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const links = [
     { href: `/${slug}`, label: "Inicio" },
@@ -28,71 +34,80 @@ export function Navbar({ shopName, slug, phone }: NavbarProps) {
   };
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-neutral-950/90 backdrop-blur-md shadow-2xl shadow-black/50">
-      <div className="flex justify-between items-center px-6 md:px-8 py-4 max-w-screen-2xl mx-auto">
-        {/* Logo + phone */}
-        <div className="flex items-center gap-4">
-          <Link
-            href={`/${slug}`}
-            className="text-xl md:text-2xl font-bold text-hc-primary uppercase tracking-widest font-headline"
-          >
-            {shopName}
-          </Link>
-          {phone && (
-            <a href={`tel:${phone}`} className="hidden lg:flex items-center gap-1 text-neutral-400 hover:text-hc-primary transition-colors text-sm">
-              <AppIcon name="call" className="text-base" />
-              {phone}
-            </a>
-          )}
-        </div>
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        scrolled
+          ? "bg-hc-surface/95 backdrop-blur-md border-b border-hc-outline-variant/20 py-3"
+          : "bg-transparent py-5"
+      }`}
+    >
+      <div className="flex justify-between items-center px-6 md:px-12 max-w-screen-2xl mx-auto">
+        {/* Logo */}
+        <Link
+          href={`/${slug}`}
+          className="font-headline text-lg md:text-xl italic text-hc-on-surface hover:text-hc-primary transition-colors"
+        >
+          {shopName}
+        </Link>
 
         {/* Desktop links */}
-        <div className="hidden md:flex items-center gap-8 font-headline text-base">
+        <div className="hidden md:flex items-center gap-10">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className={
+              className={`relative font-body text-xs tracking-widest uppercase pb-1 transition-colors ${
                 isActive(link.href)
-                  ? "text-hc-primary font-bold border-b-2 border-hc-primary pb-1"
-                  : "text-neutral-400 hover:text-hc-primary transition-colors"
-              }
+                  ? "text-hc-primary"
+                  : "text-hc-on-surface-variant hover:text-hc-on-surface"
+              }`}
             >
               {link.label}
+              {isActive(link.href) && (
+                <span className="absolute bottom-0 left-0 w-full h-px bg-hc-primary" />
+              )}
             </Link>
           ))}
         </div>
 
-        {/* Right side: CTA + hamburger */}
-        <div className="flex items-center gap-3">
+        {/* Right: phone + CTA + hamburger */}
+        <div className="flex items-center gap-5">
+          {phone && (
+            <a
+              href={`tel:${phone}`}
+              className="hidden lg:block text-xs text-hc-on-surface-variant hover:text-hc-primary transition-colors tracking-widest uppercase"
+            >
+              {phone}
+            </a>
+          )}
           <Link
             href={`/${slug}/reservar`}
-            className="bg-hc-primary text-hc-on-primary px-4 md:px-6 py-2 rounded-lg font-bold hover:bg-hc-primary-container hover:scale-95 transition-all duration-200 text-xs md:text-sm uppercase tracking-widest"
+            className="border border-hc-primary text-hc-primary px-5 py-2 text-xs font-bold uppercase tracking-widest hover:bg-hc-primary hover:text-hc-on-primary transition-all duration-300"
           >
             Reservar
           </Link>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 text-neutral-300 hover:text-hc-primary transition-colors"
+            className="md:hidden p-1 text-hc-on-surface-variant hover:text-hc-primary transition-colors"
             aria-label="Menú"
           >
-            {menuOpen ? <X size={24} /> : <Menu size={24} />}
+            {menuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile slide-down menu */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-neutral-950/95 backdrop-blur-md border-t border-white/5 px-6 pb-6 pt-4 space-y-1">
+        <div className="md:hidden bg-hc-surface/98 backdrop-blur-md border-t border-hc-outline-variant/20 px-6 pt-4 pb-6">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
-              className={`block py-3 px-4 rounded-lg text-lg font-headline transition-colors ${
+              className={`block py-3 text-sm uppercase tracking-widest font-body border-b border-hc-outline-variant/10 transition-colors ${
                 isActive(link.href)
-                  ? "text-hc-primary bg-white/5 font-bold"
-                  : "text-neutral-300 hover:text-hc-primary hover:bg-white/5"
+                  ? "text-hc-primary"
+                  : "text-hc-on-surface-variant hover:text-hc-on-surface"
               }`}
             >
               {link.label}
@@ -101,9 +116,8 @@ export function Navbar({ shopName, slug, phone }: NavbarProps) {
           {phone && (
             <a
               href={`tel:${phone}`}
-              className="flex items-center gap-2 py-3 px-4 rounded-lg text-lg text-neutral-400 hover:text-hc-primary transition-colors"
+              className="block pt-4 text-sm text-hc-on-surface-variant hover:text-hc-primary transition-colors tracking-widest uppercase"
             >
-              <AppIcon name="call" className="text-lg" />
               {phone}
             </a>
           )}
