@@ -74,9 +74,9 @@ export default function HomePage() {
         </p>
         <div className="bg-hc-surface-container-high rounded-2xl p-8 border border-hc-outline-variant">
           <p className="text-5xl font-extrabold mb-2 text-hc-on-surface">
-            $25{" "}
+            $299{" "}
             <span className="text-lg font-normal text-hc-on-surface-variant">
-              USD / mes
+              MXN / mes
             </span>
           </p>
           <ul className="mt-6 space-y-3 text-left max-w-sm mx-auto text-hc-on-surface">
