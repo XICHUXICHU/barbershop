@@ -1,27 +1,42 @@
 import { Injectable } from "@nestjs/common";
-import { Barbershop as PrismaBarbershop } from "@prisma/client";
 import { PrismaService } from "../database/prisma.service";
 import { IBarbershopRepository } from "../../domain/repositories";
 import { Barbershop } from "../../domain/entities";
+
+// Explicit type to avoid Prisma client cache issues
+type BarbershopRow = {
+  id: string;
+  ownerId: string;
+  name: string;
+  slug: string;
+  phone: string;
+  address: string;
+  logoUrl: string | null;
+  coverUrl: string | null;
+  servicesPosterUrl: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 @Injectable()
 export class PrismaBarbershopRepository implements IBarbershopRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findById(id: string): Promise<Barbershop | null> {
-    const row = await this.prisma.barbershop.findUnique({ where: { id } });
+    const row = await this.prisma.barbershop.findUnique({ where: { id } }) as BarbershopRow | null;
     return row ? this.toEntity(row) : null;
   }
 
   async findBySlug(slug: string): Promise<Barbershop | null> {
-    const row = await this.prisma.barbershop.findUnique({ where: { slug } });
+    const row = await this.prisma.barbershop.findUnique({ where: { slug } }) as BarbershopRow | null;
     return row ? this.toEntity(row) : null;
   }
 
   async findAll(): Promise<Barbershop[]> {
     const rows = await this.prisma.barbershop.findMany({
       orderBy: { createdAt: "desc" },
-    });
+    }) as BarbershopRow[];
     return rows.map((r) => this.toEntity(r));
   }
 
@@ -29,14 +44,14 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
     const rows = await this.prisma.barbershop.findMany({
       where: { ownerId },
       orderBy: { createdAt: "desc" },
-    });
+    }) as BarbershopRow[];
     return rows.map((r) => this.toEntity(r));
   }
 
   async create(
     data: Omit<Barbershop, "id" | "createdAt">,
   ): Promise<Barbershop> {
-    const row = await this.prisma.barbershop.create({ data });
+    const row = await this.prisma.barbershop.create({ data }) as BarbershopRow;
     return this.toEntity(row);
   }
 
@@ -45,11 +60,11 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
     const row = await this.prisma.barbershop.update({
       where: { id },
       data: rest,
-    });
+    }) as BarbershopRow;
     return this.toEntity(row);
   }
 
-  private toEntity(row: PrismaBarbershop): Barbershop {
+  private toEntity(row: BarbershopRow): Barbershop {
     return new Barbershop(
       row.id,
       row.ownerId,
