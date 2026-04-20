@@ -61,9 +61,10 @@ export class BarbershopController {
     @Param("id") id: string,
     @Body() body: Partial<CreateBarbershopDto>,
     @CurrentUser("userId") userId: string,
+    @CurrentUser("role") role: string | null,
   ) {
     const shop = await this.barbershopRepo.findById(id);
-    if (!shop || shop.ownerId !== userId) {
+    if (!shop || (shop.ownerId !== userId && role !== "admin")) {
       throw new ForbiddenException("No tienes permiso para editar esta barbería");
     }
     return this.barbershopRepo.update(id, body as any);
