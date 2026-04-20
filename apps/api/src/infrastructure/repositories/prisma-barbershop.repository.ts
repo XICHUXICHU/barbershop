@@ -13,7 +13,7 @@ type BarbershopRow = {
   address: string;
   logoUrl: string | null;
   coverUrl: string | null;
-  servicesPosterUrl: string | null;
+  servicesPosterUrl?: string | null;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -74,9 +74,9 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
       row.address,
       row.logoUrl,
       row.coverUrl,
-      row.servicesPosterUrl,
       row.isActive,
       row.createdAt,
+      row.servicesPosterUrl ?? null,
     );
   }
 }
