@@ -12,16 +12,22 @@ export default async function ServiciosPage({ params }: Props) {
   const { slug } = await params;
 
   let shop: BarbershopDto;
+  let services: ServiceDto[] = [];
+  
   try {
     shop = await apiFetch<BarbershopDto>(`/barbershops/${slug}`);
   } catch {
     notFound();
   }
 
-  const services = await apiFetch<ServiceDto[]>(
-    `/services/barbershop/${shop.id}`
-  );
+  try {
+    services = await apiFetch<ServiceDto[]>(`/services/barbershop/${shop.id}`);
+  } catch {
+    services = [];
+  }
+  
   const activeServices = services.filter((s) => s.isActive);
+  const posterUrl = (shop as any).servicesPosterUrl as string | null;
 
   return (
     <>
@@ -43,15 +49,15 @@ export default async function ServiciosPage({ params }: Props) {
       </header>
 
       {/* Cartel de Servicios Personalizado */}
-      {shop.servicesPosterUrl && (
+      {posterUrl && (
         <section className="max-w-7xl mx-auto px-6 md:px-12 py-10 border-b border-hc-outline-variant/20">
           <div className="flex flex-col items-center">
             <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-6">
               Nuestros Precios
             </p>
-            <div className="relative group cursor-pointer" onClick={() => window.open(shop.servicesPosterUrl!, '_blank')}>
+            <a href={posterUrl} target="_blank" rel="noopener noreferrer" className="relative group cursor-pointer">
               <img
-                src={shop.servicesPosterUrl}
+                src={posterUrl}
                 alt="Lista de precios y servicios"
                 className="max-w-full md:max-w-2xl h-auto rounded-lg shadow-lg border border-hc-outline-variant/20"
               />
@@ -60,7 +66,7 @@ export default async function ServiciosPage({ params }: Props) {
                   Click para ver en grande
                 </span>
               </div>
-            </div>
+            </a>
           </div>
         </section>
       )}
