@@ -10,6 +10,5 @@ export class Barbershop {
     public readonly coverUrl: string | null,
     public readonly isActive: boolean,
     public readonly createdAt: Date,
-    public readonly servicesPosterUrl: string | null = null,
   ) {}
 }
