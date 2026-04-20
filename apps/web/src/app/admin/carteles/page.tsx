@@ -35,6 +35,7 @@ interface PosterService {
 }
 
 interface PosterData {
+  layout: "classic" | "elegant";
   shopName: string;
   tagline: string;
   subtitle: string;
@@ -56,6 +57,7 @@ const SITE_URL =
   "https://barbershop-web-sigma.vercel.app";
 
 const DEFAULT_POSTER: PosterData = {
+  layout: "classic",
   shopName: "Barbería La Imperial",
   tagline: "Tradición en cada corte, excelencia en cada detalle.",
   subtitle: "Desde 1924",
@@ -136,6 +138,134 @@ function PosterPreview({
   posterRef: React.RefObject<HTMLDivElement | null>;
 }) {
   const n = data.services.length;
+
+  if (data.layout === "elegant") {
+    const compact = n >= 5;
+    const padding = compact ? "24px" : "32px";
+    
+    // Background: dark leather/grain texture simulation using radial-gradient
+    const goldColor = data.secondaryColor || "#c9a84c"; 
+    // Adapt dark bg to accent
+    const bgColor = data.accentColor === "#af101a" ? "#1a0b0f" : data.accentColor === "#1e3a5f" ? "#0b1522" : "#111111"; 
+
+    return (
+      <div
+        ref={posterRef}
+        className="poster-canvas"
+        style={{
+          aspectRatio: "8.5 / 14",
+          width: "100%",
+          maxWidth: "510px",
+          margin: "0 auto",
+          position: "relative",
+          backgroundColor: bgColor,
+          backgroundImage: `radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px)`,
+          backgroundPosition: `0 0, 2px 2px`,
+          backgroundSize: `4px 4px`,
+          fontFamily: "'Inter', sans-serif",
+          color: "#fff",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          padding,
+          border: `6px solid ${goldColor}`,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            border: `2px solid ${goldColor}`,
+            outline: `1px solid ${goldColor}`,
+            outlineOffset: "-6px",
+            padding: compact ? "24px" : "32px",
+            display: "flex",
+            flexDirection: "column",
+            position: "relative",
+          }}
+        >
+          {/* Top Vintage Ornament */}
+          <div style={{ textAlign: "center", marginBottom: compact ? "24px" : "36px", color: goldColor }}>
+            <div style={{ fontSize: "28px", lineHeight: 1 }}>⚜</div>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px", justifyContent: "center" }}>
+              <div style={{ height: "1px", width: "40px", backgroundColor: goldColor }} />
+              <span style={{ fontFamily: "'Noto Serif', serif", textTransform: "uppercase", fontSize: "14px", letterSpacing: "2px", fontWeight: "bold" }}>
+                {data.subtitle}
+              </span>
+              <div style={{ height: "1px", width: "40px", backgroundColor: goldColor }} />
+            </div>
+            
+            {/* Title */}
+            <h1
+              style={{
+                fontFamily: "'Noto Serif', serif",
+                fontSize: compact ? "32px" : "38px",
+                fontWeight: 700,
+                color: "#fff",
+                marginTop: "20px",
+                marginBottom: "8px",
+                lineHeight: 1.1,
+                textTransform: "uppercase",
+              }}
+            >
+              {data.servicesTitle.toUpperCase()}
+            </h1>
+            <h2
+              style={{ fontFamily: "'Noto Serif', serif", fontSize: "16px", color: goldColor, fontStyle: "italic", fontWeight: 400 }}
+            >
+              {data.shopName}
+            </h2>
+          </div>
+
+          {/* List of services */}
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: compact ? "16px" : "24px", marginBottom: "32px" }}>
+            {data.services.map((svc, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", borderBottom: `1px dashed rgba(255, 255, 255, 0.15)`, paddingBottom: "8px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "4px", paddingRight: "16px" }}>
+                  <span style={{ fontSize: compact ? "18px" : "22px", fontFamily: "'Noto Serif', serif", color: "#fff", letterSpacing: "0.5px", lineHeight: 1.2 }}>
+                    {svc.name}
+                  </span>
+                  {!compact && svc.description && (
+                    <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.6)", fontStyle: "italic", lineHeight: 1.3 }}>{svc.description}</span>
+                  )}
+                </div>
+                <span style={{ fontSize: compact ? "22px" : "26px", fontWeight: 700, color: goldColor, flexShrink: 0 }}>
+                  {svc.price}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Bottom section (QR & Brand) */}
+          <div style={{ marginTop: "auto", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: "16px" }}>
+            <div style={{ flex: 1, marginBottom: "8px" }}>
+              <div style={{ color: goldColor, fontSize: "20px", fontFamily: "'Noto Serif', serif", fontWeight: "bold", marginBottom: "8px" }}>
+                {data.bookingLabel}
+              </div>
+              <div style={{ color: "rgba(255,255,255,0.7)", fontSize: "12px", lineHeight: 1.4 }}>{data.address}</div>
+              <div style={{ color: "#fff", fontSize: "14px", marginTop: "8px", fontWeight: "600", display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{color: goldColor}}>📞</span> {data.phone}
+              </div>
+            </div>
+            
+            {/* QR box matching the gold styling */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", background: goldColor, padding: "8px", borderRadius: "12px", flexShrink: 0 }}>
+              <div style={{ backgroundColor: "#fff", padding: "6px", borderRadius: "8px", display: "flex" }}>
+                 <QRCode value={data.qrUrl || "https://example.com"} size={compact ? 56 : 72} level="M" style={{ height: "auto", maxWidth: "100%", width: "100%" }} />
+              </div>
+              <span style={{ marginTop: "6px", fontSize: "9px", color: "#111", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "-0.5px" }}>
+                {data.bookingUrl}
+              </span>
+            </div>
+          </div>
+          
+          <div style={{ textAlign: "center", marginTop: "24px" }}>
+             <div style={{ fontSize: "24px", color: goldColor, lineHeight: 1 }}>❖</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Scale layout based on service count
   const compact = n >= 5;
   const tight = n >= 4;
@@ -771,6 +901,42 @@ export default function CartelesPage() {
               Al seleccionar una barbería se cargarán sus servicios
               automáticamente. Puedes editar todo después.
             </p>
+          </section>
+
+          <section className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+            <h2 className="text-lg font-semibold mb-3">Diseño del Cartel</h2>
+            <div className="flex gap-4">
+              <label
+                className={`flex-1 cursor-pointer border rounded-xl p-4 flex items-center justify-center text-sm font-medium transition-colors ${
+                  poster.layout === "classic"
+                    ? "border-blue-600 bg-blue-50 ring-1 ring-blue-600 text-blue-700"
+                    : "border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                <input
+                  type="radio"
+                  className="sr-only"
+                  checked={poster.layout === "classic"}
+                  onChange={() => updateField("layout", "classic")}
+                />
+                Clásico Luminoso
+              </label>
+              <label
+                className={`flex-1 cursor-pointer border rounded-xl p-4 flex items-center justify-center text-sm font-medium transition-colors ${
+                  poster.layout === "elegant"
+                    ? "border-amber-600 bg-amber-50 ring-1 ring-amber-600 text-amber-700"
+                    : "border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                <input
+                  type="radio"
+                  className="sr-only"
+                  checked={poster.layout === "elegant"}
+                  onChange={() => updateField("layout", "elegant")}
+                />
+                Elegante Oscuro
+              </label>
+            </div>
           </section>
 
           {/* General Info */}
