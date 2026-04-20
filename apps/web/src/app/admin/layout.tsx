@@ -49,6 +49,12 @@ export default function AdminLayout({
           >
             🖼️ Carteles
           </Link>
+          <Link
+            href="/admin/seguimiento"
+            className="px-3 py-2 rounded-lg hover:bg-gray-100 text-sm font-medium text-gray-700"
+          >
+            📊 Seguimiento
+          </Link>
         </nav>
 
         <div className="mt-auto">
