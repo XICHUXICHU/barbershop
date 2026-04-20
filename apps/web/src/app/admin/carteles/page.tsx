@@ -130,6 +130,29 @@ function PosterPreview({
   data: PosterData;
   posterRef: React.RefObject<HTMLDivElement | null>;
 }) {
+  const n = data.services.length;
+  // Scale layout based on service count
+  const compact = n >= 5;
+  const tight = n >= 4;
+  const padding = compact ? "28px 32px" : tight ? "36px 36px" : "48px 40px";
+  const headerMb = compact ? "16px" : tight ? "22px" : "32px";
+  const titleSize = compact ? "28px" : tight ? "32px" : "36px";
+  const svcTitleSize = compact ? "16px" : tight ? "18px" : "20px";
+  const svcTitleMb = compact ? "12px" : tight ? "16px" : "24px";
+  const svcGap = compact ? "8px" : tight ? "12px" : "20px";
+  const svcNameSize = compact ? "13px" : tight ? "14px" : "16px";
+  const svcPriceSize = compact ? "12px" : tight ? "13px" : "14px";
+  const svcDescSize = compact ? "8px" : "10px";
+  const svcDurSize = compact ? "7px" : "8px";
+  const featuredPad = compact ? "8px" : tight ? "12px" : "16px";
+  const showPole = n <= 4;
+  const poleHeight = tight ? "60px" : "100px";
+  const polePad = tight ? "10px 0" : "20px 0";
+  const footerPt = compact ? "12px" : tight ? "16px" : "24px";
+  const footerTitleSize = compact ? "16px" : tight ? "20px" : "24px";
+  const qrSize = compact ? "52px" : tight ? "60px" : "72px";
+  const qrPad = compact ? "8px" : "12px";
+
   return (
     <div
       ref={posterRef}
@@ -145,7 +168,7 @@ function PosterPreview({
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        padding: "48px 40px",
+        padding,
         border: "12px solid #f0edec",
       }}
     >
@@ -173,7 +196,7 @@ function PosterPreview({
           flexDirection: "column",
           alignItems: "center",
           textAlign: "center",
-          marginBottom: "32px",
+          marginBottom: headerMb,
         }}
       >
         {/* Since year line */}
@@ -182,7 +205,7 @@ function PosterPreview({
             display: "flex",
             alignItems: "center",
             gap: "12px",
-            marginBottom: "16px",
+            marginBottom: compact ? "8px" : "16px",
           }}
         >
           <div
@@ -217,7 +240,7 @@ function PosterPreview({
         <h1
           style={{
             fontFamily: "'Noto Serif', 'Georgia', serif",
-            fontSize: "36px",
+            fontSize: titleSize,
             fontWeight: 700,
             color: data.accentColor,
             fontStyle: "italic",
@@ -231,7 +254,7 @@ function PosterPreview({
         <p
           style={{
             fontFamily: "'Noto Serif', 'Georgia', serif",
-            fontSize: "13px",
+            fontSize: compact ? "11px" : "13px",
             color: "#5b403d",
             fontStyle: "italic",
             margin: 0,
@@ -249,15 +272,16 @@ function PosterPreview({
           flex: 1,
           display: "flex",
           flexDirection: "column",
+          minHeight: 0,
         }}
       >
         <h2
           style={{
             fontFamily: "'Noto Serif', 'Georgia', serif",
-            fontSize: "20px",
+            fontSize: svcTitleSize,
             fontWeight: 700,
             color: "#1c1b1b",
-            marginBottom: "24px",
+            marginBottom: svcTitleMb,
             borderLeft: `4px solid ${data.secondaryColor}`,
             paddingLeft: "12px",
           }}
@@ -265,7 +289,7 @@ function PosterPreview({
           {data.servicesTitle}
         </h2>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: svcGap }}>
           {data.services.map((svc, i) => (
             <div
               key={i}
@@ -274,7 +298,7 @@ function PosterPreview({
                 ...(svc.featured
                   ? {
                       backgroundColor: "#f6f3f2",
-                      padding: "16px",
+                      padding: featuredPad,
                       borderRadius: "8px",
                       borderLeft: `4px solid ${data.accentColor}`,
                     }
@@ -292,7 +316,7 @@ function PosterPreview({
                 <h3
                   style={{
                     fontFamily: "'Noto Serif', 'Georgia', serif",
-                    fontSize: "16px",
+                    fontSize: svcNameSize,
                     fontWeight: 700,
                     color: svc.featured ? data.accentColor : "#1c1b1b",
                     margin: 0,
@@ -303,7 +327,7 @@ function PosterPreview({
                 <span
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: "14px",
+                    fontSize: svcPriceSize,
                     fontWeight: 600,
                     color: svc.featured
                       ? data.accentColor
@@ -323,7 +347,7 @@ function PosterPreview({
               >
                 <p
                   style={{
-                    fontSize: "10px",
+                    fontSize: svcDescSize,
                     fontStyle: "italic",
                     margin: 0,
                     maxWidth: "70%",
@@ -333,7 +357,7 @@ function PosterPreview({
                 </p>
                 <span
                   style={{
-                    fontSize: "8px",
+                    fontSize: svcDurSize,
                     fontWeight: 700,
                     letterSpacing: "0.1em",
                     textTransform: "uppercase",
@@ -345,7 +369,7 @@ function PosterPreview({
               {!svc.featured && (
                 <div
                   style={{
-                    marginTop: "8px",
+                    marginTop: compact ? "4px" : "8px",
                     height: "1px",
                     width: "100%",
                     backgroundColor: "#e4beba",
@@ -358,66 +382,97 @@ function PosterPreview({
         </div>
       </div>
 
-      {/* Barber Pole + PREMIUM badge area */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 10,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "20px 0",
-        }}
-      >
+      {/* Barber Pole + PREMIUM badge area — hidden when many services */}
+      {showPole && (
         <div
           style={{
-            width: "40px",
-            height: "100px",
-            backgroundColor: "#fff",
-            borderRadius: "9999px",
-            overflow: "hidden",
-            border: "3px solid #1c1b1b",
             position: "relative",
+            zIndex: 10,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: polePad,
           }}
         >
           <div
             style={{
-              position: "absolute",
-              inset: 0,
-              background: `repeating-linear-gradient(-45deg, ${data.accentColor}, ${data.accentColor} 10px, #ffffff 10px, #ffffff 20px, #2b5bb5 20px, #2b5bb5 30px, #ffffff 30px, #ffffff 40px)`,
-              height: "200%",
-              animation: "stripe-scroll 2s linear infinite",
+              width: "40px",
+              height: poleHeight,
+              backgroundColor: "#fff",
+              borderRadius: "9999px",
+              overflow: "hidden",
+              border: "3px solid #1c1b1b",
+              position: "relative",
             }}
-          />
+          >
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: `repeating-linear-gradient(-45deg, ${data.accentColor}, ${data.accentColor} 10px, #ffffff 10px, #ffffff 20px, #2b5bb5 20px, #2b5bb5 30px, #ffffff 30px, #ffffff 40px)`,
+                height: "200%",
+                animation: "stripe-scroll 2s linear infinite",
+              }}
+            />
+          </div>
+          {data.badgeText && (
+            <div
+              style={{
+                position: "absolute",
+                right: "30px",
+                bottom: "10px",
+                transform: "rotate(-12deg)",
+                backgroundColor: data.secondaryColor,
+                color: "#ffffff",
+                padding: "6px 14px",
+                fontFamily: "'Noto Serif', 'Georgia', serif",
+                fontWeight: 700,
+                fontSize: "12px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+              }}
+            >
+              {data.badgeText}
+            </div>
+          )}
         </div>
-        {data.badgeText && (
+      )}
+
+      {/* Badge inline when pole is hidden */}
+      {!showPole && data.badgeText && (
+        <div
+          style={{
+            position: "relative",
+            zIndex: 10,
+            display: "flex",
+            justifyContent: "center",
+            padding: "8px 0",
+          }}
+        >
           <div
             style={{
-              position: "absolute",
-              right: "30px",
-              bottom: "10px",
-              transform: "rotate(-12deg)",
+              transform: "rotate(-2deg)",
               backgroundColor: data.secondaryColor,
               color: "#ffffff",
-              padding: "6px 14px",
+              padding: "4px 14px",
               fontFamily: "'Noto Serif', 'Georgia', serif",
               fontWeight: 700,
-              fontSize: "12px",
+              fontSize: "11px",
               boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
             }}
           >
             {data.badgeText}
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Footer / Contact */}
       <div
         style={{
           position: "relative",
           zIndex: 10,
+          flexShrink: 0,
           borderTop: "1px solid rgba(143,111,108,0.3)",
-          paddingTop: "24px",
+          paddingTop: footerPt,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "flex-end",
@@ -428,7 +483,7 @@ function PosterPreview({
           <h4
             style={{
               fontFamily: "'Noto Serif', 'Georgia', serif",
-              fontSize: "24px",
+              fontSize: footerTitleSize,
               fontWeight: 700,
               color: "#1c1b1b",
               margin: 0,
@@ -440,7 +495,7 @@ function PosterPreview({
             style={{
               color: "#5b403d",
               fontWeight: 500,
-              fontSize: "10px",
+              fontSize: compact ? "9px" : "10px",
               margin: 0,
             }}
           >
@@ -455,13 +510,13 @@ function PosterPreview({
                 marginTop: "4px",
               }}
             >
-              <span style={{ fontSize: "14px" }}>📞</span>
+              <span style={{ fontSize: compact ? "12px" : "14px" }}>📞</span>
               <span
                 style={{
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 700,
                   color: "#1c1b1b",
-                  fontSize: "12px",
+                  fontSize: compact ? "10px" : "12px",
                 }}
               >
                 {data.phone}
@@ -471,12 +526,12 @@ function PosterPreview({
         </div>
 
         {/* QR / URL section */}
-        <div style={{ textAlign: "center" }}>
+        <div style={{ textAlign: "center", flexShrink: 0 }}>
           <div
             style={{
               backgroundColor: data.secondaryColor,
               borderRadius: "12px",
-              padding: "12px",
+              padding: qrPad,
               boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
               display: "flex",
               flexDirection: "column",
@@ -485,8 +540,8 @@ function PosterPreview({
           >
             <div
               style={{
-                width: "72px",
-                height: "72px",
+                width: qrSize,
+                height: qrSize,
                 backgroundColor: "#fff",
                 borderRadius: "8px",
                 display: "flex",
