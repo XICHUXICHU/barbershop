@@ -39,6 +39,11 @@ export class CreateBarbershopDto {
 
   @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
+  servicesPosterUrl?: string;
+
+  @ApiPropertyOptional()
+  @IsOptional()
   @IsBoolean()
   isActive?: boolean;
 }

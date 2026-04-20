@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Barbershop as PrismaBarbershop } from "@prisma/client";
 import { PrismaService } from "../database/prisma.service";
 import { IBarbershopRepository } from "../../domain/repositories";
 import { Barbershop } from "../../domain/entities";
@@ -21,7 +22,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
     const rows = await this.prisma.barbershop.findMany({
       orderBy: { createdAt: "desc" },
     });
-    return rows.map(this.toEntity);
+    return rows.map((r) => this.toEntity(r));
   }
 
   async findByOwnerId(ownerId: string): Promise<Barbershop[]> {
@@ -29,7 +30,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
       where: { ownerId },
       orderBy: { createdAt: "desc" },
     });
-    return rows.map(this.toEntity);
+    return rows.map((r) => this.toEntity(r));
   }
 
   async create(
@@ -48,18 +49,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
     return this.toEntity(row);
   }
 
-  private toEntity(row: {
-    id: string;
-    ownerId: string;
-    name: string;
-    slug: string;
-    phone: string;
-    address: string;
-    logoUrl: string | null;
-    coverUrl: string | null;
-    isActive: boolean;
-    createdAt: Date;
-  }): Barbershop {
+  private toEntity(row: PrismaBarbershop): Barbershop {
     return new Barbershop(
       row.id,
       row.ownerId,
@@ -69,6 +59,7 @@ export class PrismaBarbershopRepository implements IBarbershopRepository {
       row.address,
       row.logoUrl,
       row.coverUrl,
+      row.servicesPosterUrl,
       row.isActive,
       row.createdAt,
     );

@@ -10,17 +10,18 @@ datasource db {
 // ─── Multi-tenant root ───
 
 model Barbershop {
-  id        String   @id @default(uuid())
-  ownerId   String   @default("") @map("owner_id")
-  name      String
-  slug      String   @unique
-  phone     String
-  address   String
-  logoUrl   String?  @map("logo_url")
-  coverUrl  String?  @map("cover_url")
-  isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                String   @id @default(uuid())
+  ownerId           String   @default("") @map("owner_id")
+  name              String
+  slug              String   @unique
+  phone             String
+  address           String
+  logoUrl           String?  @map("logo_url")
+  coverUrl          String?  @map("cover_url")
+  servicesPosterUrl String?  @map("services_poster_url")
+  isActive          Boolean  @default(true) @map("is_active")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
 
   barbers      Barber[]
   services     Service[]

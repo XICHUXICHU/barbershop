@@ -42,6 +42,29 @@ export default async function ServiciosPage({ params }: Props) {
         </div>
       </header>
 
+      {/* Cartel de Servicios Personalizado */}
+      {shop.servicesPosterUrl && (
+        <section className="max-w-7xl mx-auto px-6 md:px-12 py-10 border-b border-hc-outline-variant/20">
+          <div className="flex flex-col items-center">
+            <p className="font-body text-xs text-hc-primary uppercase tracking-[0.4em] mb-6">
+              Nuestros Precios
+            </p>
+            <div className="relative group cursor-pointer" onClick={() => window.open(shop.servicesPosterUrl!, '_blank')}>
+              <img
+                src={shop.servicesPosterUrl}
+                alt="Lista de precios y servicios"
+                className="max-w-full md:max-w-2xl h-auto rounded-lg shadow-lg border border-hc-outline-variant/20"
+              />
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                <span className="text-white text-sm font-medium bg-black/60 px-4 py-2 rounded-full">
+                  Click para ver en grande
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Lista de Servicios */}
       <section className="max-w-7xl mx-auto px-6 md:px-12 py-10">
         {activeServices.length === 0 ? (

@@ -25,8 +25,13 @@ interface EditState {
   priceAmount: number;
 }
 
+interface BarbershopData {
+  id: string;
+  servicesPosterUrl: string | null;
+}
+
 export default function ServicesPage() {
-  const { barbershopId } = useBarbershop();
+  const { barbershopId, barbershopSlug } = useBarbershop();
   const authFetch = useAuthFetch();
   const [services, setServices] = useState<ServiceRow[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -35,6 +40,10 @@ export default function ServicesPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editState, setEditState] = useState<EditState | null>(null);
   const [editSaving, setEditSaving] = useState(false);
+  
+  // Poster state
+  const [posterUrl, setPosterUrl] = useState<string | null>(null);
+  const [posterSaving, setPosterSaving] = useState(false);
 
   function load() {
     if (!barbershopId) return;
@@ -44,9 +53,47 @@ export default function ServicesPage() {
       .catch(() => {});
   }
 
+  function loadBarbershop() {
+    if (!barbershopSlug) return;
+    fetch(`${API}/barbershops/${barbershopSlug}`)
+      .then((r) => r.json())
+      .then((d: BarbershopData) => setPosterUrl(d.servicesPosterUrl ?? null))
+      .catch(() => {});
+  }
+
   useEffect(() => {
     load();
-  }, [barbershopId]);
+    loadBarbershop();
+  }, [barbershopId, barbershopSlug]);
+
+  async function handlePosterUpload(url: string) {
+    setPosterSaving(true);
+    try {
+      await authFetch(`/barbershops/${barbershopId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ servicesPosterUrl: url }),
+      });
+      setPosterUrl(url);
+    } catch {
+      // Error handling silently
+    }
+    setPosterSaving(false);
+  }
+
+  async function handleRemovePoster() {
+    if (!confirm("¿Eliminar el cartel de servicios?")) return;
+    setPosterSaving(true);
+    try {
+      await authFetch(`/barbershops/${barbershopId}`, {
+        method: "PATCH",
+        body: JSON.stringify({ servicesPosterUrl: null }),
+      });
+      setPosterUrl(null);
+    } catch {
+      // Error handling silently
+    }
+    setPosterSaving(false);
+  }
 
   function startEdit(s: ServiceRow) {
     setEditingId(s.id);
@@ -125,6 +172,101 @@ export default function ServicesPage() {
         >
           {showForm ? "Cancelar" : "+ Nuevo Servicio"}
         </button>
+      </div>
+
+      {/* Cartel de Servicios Personalizado */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-5 mb-6">
+        <div className="flex items-start gap-4">
+          <div className="text-3xl">🖼️</div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-gray-900 mb-1">Cartel de Servicios (Opcional)</h3>
+            <p className="text-sm text-gray-600 mb-3">
+              Sube una imagen con tu propio diseño de lista de precios/servicios. 
+              Se mostrará en tu página pública junto a los servicios que agregas aquí.
+            </p>
+            
+            {posterUrl ? (
+              <div className="flex items-start gap-4">
+                <div className="relative group">
+                  <img 
+                    src={posterUrl} 
+                    alt="Cartel de servicios" 
+                    className="h-40 w-auto object-contain rounded-lg border border-gray-200 bg-white"
+                  />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center gap-2">
+                    <a 
+                      href={posterUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="px-3 py-1.5 bg-white text-gray-900 rounded text-xs font-medium hover:bg-gray-100"
+                    >
+                      Ver completo
+                    </a>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="cursor-pointer">
+                    <span className="px-4 py-2 bg-white border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors inline-block">
+                      {posterSaving ? "Guardando..." : "Cambiar imagen"}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="hidden"
+                      disabled={posterSaving}
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        const formData = new FormData();
+                        formData.append("file", file);
+                        const res = await fetch(`${API}/upload/image`, { method: "POST", body: formData });
+                        if (res.ok) {
+                          const data: { url: string } = await res.json();
+                          handlePosterUpload(data.url);
+                        }
+                      }}
+                    />
+                  </label>
+                  <button
+                    onClick={handleRemovePoster}
+                    disabled={posterSaving}
+                    className="px-4 py-2 text-red-600 border border-red-200 rounded-lg text-sm font-medium hover:bg-red-50 transition-colors disabled:opacity-50"
+                  >
+                    Eliminar cartel
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className="cursor-pointer inline-block">
+                <span className="px-5 py-2.5 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 transition-colors inline-flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                  </svg>
+                  {posterSaving ? "Subiendo..." : "Subir cartel personalizado"}
+                </span>
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  className="hidden"
+                  disabled={posterSaving}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setPosterSaving(true);
+                    const formData = new FormData();
+                    formData.append("file", file);
+                    const res = await fetch(`${API}/upload/image`, { method: "POST", body: formData });
+                    if (res.ok) {
+                      const data: { url: string } = await res.json();
+                      handlePosterUpload(data.url);
+                    }
+                    setPosterSaving(false);
+                  }}
+                />
+              </label>
+            )}
+          </div>
+        </div>
       </div>
 
       {showForm && (
