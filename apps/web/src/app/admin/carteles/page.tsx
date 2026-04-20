@@ -35,7 +35,7 @@ interface PosterService {
 }
 
 interface PosterData {
-  layout: "classic" | "elegant";
+  layout: "classic" | "elegant" | "vintage";
   shopName: string;
   tagline: string;
   subtitle: string;
@@ -260,6 +260,242 @@ function PosterPreview({
           
           <div style={{ textAlign: "center", marginTop: "24px" }}>
              <div style={{ fontSize: "24px", color: goldColor, lineHeight: 1 }}>❖</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (data.layout === "vintage") {
+    const compact = n >= 5;
+    const padding = compact ? "20px" : "28px";
+    const frameColor = "#1f1a14";
+    const offWhite = "#f1ebe0";
+    const red = data.accentColor || "#b91c1c";
+    const gold = data.secondaryColor || "#b8860b";
+
+    return (
+      <div
+        ref={posterRef}
+        className="poster-canvas"
+        style={{
+          aspectRatio: "8.5 / 14",
+          width: "100%",
+          maxWidth: "510px",
+          margin: "0 auto",
+          position: "relative",
+          backgroundColor: offWhite,
+          backgroundImage:
+            "radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px)",
+          backgroundPosition: "0 0, 2px 2px",
+          backgroundSize: "4px 4px",
+          fontFamily: "'Inter', sans-serif",
+          color: frameColor,
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          padding,
+          border: `4px solid ${frameColor}`,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            border: `2px solid ${frameColor}`,
+            borderRadius: "10px",
+            padding: compact ? "18px" : "26px",
+            display: "flex",
+            flexDirection: "column",
+            gap: compact ? "12px" : "18px",
+            position: "relative",
+          }}
+        >
+          {/* Top heading */}
+          <div style={{ textAlign: "center" }}>
+            <div
+              style={{
+                fontSize: "10px",
+                letterSpacing: "0.2em",
+                textTransform: "uppercase",
+                marginBottom: "6px",
+              }}
+            >
+              {data.subtitle}
+            </div>
+            <div
+              style={{
+                fontFamily: "'Noto Serif', serif",
+                fontWeight: 800,
+                fontSize: compact ? "34px" : "44px",
+                letterSpacing: "0.05em",
+                marginBottom: "6px",
+              }}
+            >
+              {data.shopName.toUpperCase()}
+            </div>
+            <div
+              style={{
+                fontFamily: "'Noto Serif', serif",
+                fontSize: compact ? "16px" : "20px",
+                fontStyle: "italic",
+                color: red,
+                fontWeight: 700,
+              }}
+            >
+              {data.servicesTitle}
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div
+            style={{
+              height: "2px",
+              backgroundColor: frameColor,
+              opacity: 0.6,
+            }}
+          />
+
+          {/* Services list */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: compact ? "10px" : "14px",
+              flex: 1,
+            }}
+          >
+            {data.services.map((svc, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  borderBottom: "1px dashed rgba(0,0,0,0.3)",
+                  paddingBottom: "6px",
+                }}
+              >
+                <div style={{ paddingRight: "12px" }}>
+                  <div
+                    style={{
+                      fontFamily: "'Noto Serif', serif",
+                      fontWeight: 700,
+                      fontSize: compact ? "16px" : "18px",
+                    }}
+                  >
+                    {svc.name}
+                  </div>
+                  {!compact && svc.description && (
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        color: "rgba(0,0,0,0.6)",
+                        fontStyle: "italic",
+                        marginTop: "2px",
+                      }}
+                    >
+                      {svc.description}
+                    </div>
+                  )}
+                </div>
+                <div
+                  style={{
+                    fontWeight: 800,
+                    fontSize: compact ? "16px" : "20px",
+                    color: frameColor,
+                  }}
+                >
+                  {svc.price}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Ribbon / Offer */}
+          <div
+            style={{
+              backgroundColor: red,
+              color: "#ffffff",
+              textAlign: "center",
+              padding: compact ? "8px" : "10px",
+              fontFamily: "'Noto Serif', serif",
+              fontWeight: 700,
+              letterSpacing: "0.05em",
+            }}
+          >
+            {data.badgeText || "OFERTA ESPECIAL"}
+          </div>
+
+          {/* Footer / Contact + QR */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-end",
+              gap: "12px",
+            }}
+          >
+            <div style={{ flex: 1 }}>
+              <div
+                style={{
+                  fontFamily: "'Noto Serif', serif",
+                  fontWeight: 700,
+                  fontSize: compact ? "14px" : "16px",
+                  marginBottom: "6px",
+                  color: frameColor,
+                }}
+              >
+                {data.bookingLabel}
+              </div>
+              <div style={{ fontSize: "11px", color: "rgba(0,0,0,0.7)" }}>
+                {data.address}
+              </div>
+              <div
+                style={{
+                  fontSize: "12px",
+                  marginTop: "6px",
+                  fontWeight: 700,
+                }}
+              >
+                {data.phone}
+              </div>
+            </div>
+            <div style={{ flexShrink: 0, textAlign: "center" }}>
+              <div
+                style={{
+                  backgroundColor: gold,
+                  padding: "8px",
+                  borderRadius: "10px",
+                }}
+              >
+                <div
+                  style={{
+                    backgroundColor: "#ffffff",
+                    padding: "6px",
+                    borderRadius: "8px",
+                    display: "flex",
+                  }}
+                >
+                  <QRCode
+                    value={data.qrUrl || "https://example.com"}
+                    size={compact ? 54 : 66}
+                    level="M"
+                    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+                  />
+                </div>
+                <div
+                  style={{
+                    fontSize: "8px",
+                    fontWeight: 700,
+                    color: "#111",
+                    marginTop: "6px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {data.bookingUrl}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -935,6 +1171,21 @@ export default function CartelesPage() {
                   onChange={() => updateField("layout", "elegant")}
                 />
                 Elegante Oscuro
+              </label>
+              <label
+                className={`flex-1 cursor-pointer border rounded-xl p-4 flex items-center justify-center text-sm font-medium transition-colors ${
+                  poster.layout === "vintage"
+                    ? "border-rose-600 bg-rose-50 ring-1 ring-rose-600 text-rose-700"
+                    : "border-gray-200 bg-gray-50 hover:bg-gray-100 text-gray-700"
+                }`}
+              >
+                <input
+                  type="radio"
+                  className="sr-only"
+                  checked={poster.layout === "vintage"}
+                  onChange={() => updateField("layout", "vintage")}
+                />
+                Vintage Retro
               </label>
             </div>
           </section>
