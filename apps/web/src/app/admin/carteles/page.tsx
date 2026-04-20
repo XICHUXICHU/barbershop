@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
+import dynamic from "next/dynamic";
 import { useAuthFetch } from "../../../lib/use-auth-fetch";
 import { apiFetch } from "../../../lib/api";
+
+const QRCode = dynamic(() => import("react-qr-code"), { ssr: false });
 
 /* ── Types ── */
 interface ShopRow {
@@ -41,6 +44,7 @@ interface PosterData {
   address: string;
   bookingLabel: string;
   bookingUrl: string;
+  qrUrl: string;
   badgeText: string;
   sinceYear: string;
   accentColor: string;
@@ -92,6 +96,7 @@ const DEFAULT_POSTER: PosterData = {
   address: "Calle de la Tradición 12, Ciudad de México.",
   bookingLabel: "¡Reserva tu cita!",
   bookingUrl: "BARBERIAIMPERIAL.COM",
+  qrUrl: `${SITE_URL}/barberia-la-imperial`,
   badgeText: "PREMIUM",
   sinceYear: "Desde 1924",
   accentColor: "#af101a",
@@ -145,7 +150,7 @@ function PosterPreview({
   const svcDescSize = compact ? "8px" : "10px";
   const svcDurSize = compact ? "7px" : "8px";
   const featuredPad = compact ? "8px" : tight ? "12px" : "16px";
-  const showPole = n <= 4;
+  const showPole = n <= 3;
   const poleHeight = tight ? "60px" : "100px";
   const polePad = tight ? "10px 0" : "20px 0";
   const footerPt = compact ? "12px" : tight ? "16px" : "24px";
@@ -547,12 +552,15 @@ function PosterPreview({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "10px",
-                color: "#999",
-                fontWeight: 600,
+                padding: "4px",
               }}
             >
-              QR
+              <QRCode
+                value={data.qrUrl || "https://example.com"}
+                size={parseInt(qrSize) - 12}
+                level="M"
+                style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+              />
             </div>
             <span
               style={{
@@ -617,6 +625,7 @@ export default function CartelesPage() {
           phone: shop.phone || prev.phone,
           address: shop.address || prev.address,
           bookingUrl: `${shop.slug.toUpperCase()}.COM`,
+          qrUrl: `${SITE_URL}/${shop.slug}`,
           services: activeSvcs.length
             ? activeSvcs.map((s, i) => ({
                 name: s.name,
@@ -1030,13 +1039,24 @@ export default function CartelesPage() {
             </label>
             <label className="block">
               <span className="text-sm text-gray-500">
-                URL / texto del QR
+                Texto bajo el QR
               </span>
               <input
                 type="text"
                 value={poster.bookingUrl}
                 onChange={(e) => updateField("bookingUrl", e.target.value)}
                 className="w-full mt-1 bg-white border border-gray-200 rounded-lg px-3 py-2 text-gray-900"
+              />
+            </label>
+            <label className="block">
+              <span className="text-sm text-gray-500">
+                URL destino del QR (lo que escanea el cliente)
+              </span>
+              <input
+                type="text"
+                value={poster.qrUrl}
+                onChange={(e) => updateField("qrUrl", e.target.value)}
+                className="w-full mt-1 bg-white border border-gray-200 rounded-lg px-3 py-2 text-gray-900 font-mono text-sm"
               />
             </label>
           </section>
